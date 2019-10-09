@@ -1,23 +1,24 @@
 #pragma once
 #include "Arduino.h"
+typedef void (*LightStatusChange)(int deviceId, int newStatus);
+
 
 class Light {
 public:
     int id;
     int gpioOut;
     bool isOn;
+    LightStatusChange onLightStatusChange;
 
     // actions
     void turnOn(){this->set(true);};
     void turnOff(){this->set(false);};
     void toggle(){this->set(!this->isOn);};
     void set(bool _status){
+        if(this->isOn==_status) return; // if not changed do nothing
         this->isOn=_status;
         digitalWrite(gpioOut, _status);
-        Serial.print("light ");
-        Serial.print(this->id, HEX);
-        Serial.print(" | ");
-        Serial.println(this->isOn?"on":"off");
+        if(onLightStatusChange!=NULL) onLightStatusChange(this->id, _status);
     };
 
     // json

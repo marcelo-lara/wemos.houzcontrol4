@@ -35,6 +35,8 @@ Light devices[deviceCount] = {
 void setup(){
     wemosWiFi.connect("houzserver");
     button.init(5, onButtonClick);
+    for (size_t i = 0; i < deviceCount; i++)
+        devices[i].onLightStatusChange = notifyNewStatus;
     apiSetup();
 };
 
@@ -42,6 +44,14 @@ void loop(){
     wemosWiFi.update();
     button.update();
     taskWorker();
+};
+
+void notifyNewStatus(int deviceId, int newStatus){
+    Serial.print("light ");
+    Serial.print(deviceId);
+    Serial.print("\t");
+    Serial.println(newStatus?"on":"off");
+    wemosWiFi.blink();
 };
 
 void taskWorker(){
