@@ -3,7 +3,8 @@
 #include "QueueArray.h"
 
 enum Command{
-    command_set = 1
+    command_set_device = 1,
+    command_set_scene  = 2
 };
 
 struct Device {

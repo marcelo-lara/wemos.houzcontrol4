@@ -12,6 +12,7 @@ AsyncWebServer server(80);
 
 #include "AsyncJson.h"
 #include "ArduinoJson.h"
+const String JSON_OK = "{\"result\":\"ok\"}";
 
 // HouzControl4 modules
 #include "src/Light.h"
@@ -34,9 +35,9 @@ Light devices[deviceCount] = {
 
 void setup(){
     wemosWiFi.connect("houzserver");
-    button.init(5, onButtonClick);
+    button.init(5, handleButtonClick);
     for (size_t i = 0; i < deviceCount; i++)
-        devices[i].onLightStatusChange = notifyNewStatus;
+        devices[i].onLightStatusChange = handleLightStatusChange;
     apiSetup();
 };
 
@@ -46,18 +47,17 @@ void loop(){
     taskWorker();
 };
 
-void notifyNewStatus(int deviceId, int newStatus){
-    Serial.print("light ");
-    Serial.print(deviceId);
-    Serial.print("\t");
-    Serial.println(newStatus?"on":"off");
-    wemosWiFi.blink();
-};
-
 void taskWorker(){
     if(!taskManager.arePendingTasks()) return; //nothing to do...
     Task task = taskManager.getNextTask();
 
+    //scene shortcut
+    if(task.command==command_set_scene){
+        renderScene(task.device.payload);
+        return;
+    }
+
+    //action should be performed on a device
     for (size_t i = 0; i < deviceCount; i++)
     {
         if(devices[i].id!=task.device.id) continue;
@@ -67,22 +67,33 @@ void taskWorker(){
 
 };
 
-void onButtonClick(int btnClickType){
+// delegates
+void handleButtonClick(int btnClickType){
     switch (btnClickType)
     {
-        case buttonEv_click: taskManager.addTask(command_set, 1, -1); break;
-        case buttonEv_dblclick: taskManager.addTask(command_set, 2, -1); break;
+        case buttonEv_click: taskManager.addTask(command_set_device, 1, -1); break;
+        case buttonEv_dblclick: taskManager.addTask(command_set_device, 2, -1); break;
         case buttonEv_longpress: 
-            taskManager.addTask(command_set, 1, 0); 
-            taskManager.addTask(command_set, 2, 0); 
+            taskManager.addTask(command_set_device, 1, 0); 
+            taskManager.addTask(command_set_device, 2, 0); 
         break;
     }
 };
+
+void handleLightStatusChange(int deviceId, int newStatus){
+    Serial.print("light ");
+    Serial.print(deviceId);
+    Serial.print("\t");
+    Serial.println(newStatus?"on":"off");
+    wemosWiFi.blink();
+};
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // API
 void apiSetup(){
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+        //TODO: single ui to handle devices
         request->send(200, "text/plain", "HouzNode");
     }); 
 
@@ -95,6 +106,7 @@ void apiSetup(){
 
 };
 
+void notFound(AsyncWebServerRequest *request) {request->send(404, "text/plain", "Not found");}
 void nullRequest(AsyncWebServerRequest *request){};
 
 void api_get_api(AsyncWebServerRequest *request){
@@ -109,6 +121,9 @@ void api_get_api(AsyncWebServerRequest *request){
     request->send(200, "application/json", jsonRes);
 }
 
+
+/////////////////////////////////////
+// Devices
 void api_post_api(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
     Serial.println("POST::/api");
     if(index){
@@ -119,20 +134,13 @@ void api_post_api(AsyncWebServerRequest *request, uint8_t *data, size_t len, siz
     //parse device
     Device dev = parseDevice((char*)data);
     if (dev.id==-1) {
-      request->send(422, "application/json", "{\"parse\":\"error\"}");
+      request->send(422, "application/json", "{\"result\":\"error\"}");
       return;
     };
 
     //add task
-    taskManager.addTask(command_set, dev);
-
-    request->send(200, "application/json", "{\"parse\":\"ok\"}");
-}
-
-void api_post_scene(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
-    int rawScene = parseScene((char*)data);
-    if(rawScene==-1) return;
-    // Serial.printf("scene::%i\n", (int)scene);
+    taskManager.addTask(command_set_device, dev);
+    request->send(200, "application/json", JSON_OK);
 }
 
 Device parseDevice(String jsonStr){
@@ -155,6 +163,16 @@ Device parseDevice(String jsonStr){
   return ret;
  };
 
+
+/////////////////////////////////////
+// Scenes
+void api_post_scene(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
+    int rawScene = parseScene((char*)data);
+    if(rawScene==-1) return;
+    taskManager.addTask(command_set_scene, 0, rawScene);
+    request->send(200, "application/json", JSON_OK);
+}
+
  int parseScene(String jsonStr){
     //decode json
     StaticJsonDocument<500> doc;
@@ -167,9 +185,19 @@ Device parseDevice(String jsonStr){
     return doc["scene"];
  };
 
-void notFound(AsyncWebServerRequest *request) {
-    request->send(404, "text/plain", "Not found");
-}
+void renderScene(int sceneId){
+    SceneEnm scene = (SceneEnm)sceneId;
+    switch (scene)
+    {
+    case scene_hello:
+        break;
+    case scene_sleep:
+        break;
+    case scene_goobye:
+        break;
+    }
+};
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
