@@ -69,14 +69,10 @@ void taskWorker(){
 
 // delegates
 void handleButtonClick(int btnClickType){
-    switch (btnClickType)
-    {
-        case buttonEv_click: taskManager.addTask(command_set_device, 1, -1); break;
-        case buttonEv_dblclick: taskManager.addTask(command_set_device, 2, -1); break;
-        case buttonEv_longpress: 
-            taskManager.addTask(command_set_device, 1, 0); 
-            taskManager.addTask(command_set_device, 2, 0); 
-        break;
+    switch (btnClickType){
+        case buttonEv_click:     taskManager.addTask(command_set_device, 1, -1); break;
+        case buttonEv_dblclick:  taskManager.addTask(command_set_device, 2, -1); break;
+        case buttonEv_longpress: taskManager.addTask(command_set_scene, 0, scene_sleep); break;
     }
 };
 
@@ -99,7 +95,6 @@ void apiSetup(){
 
     server.on("/api", HTTP_GET, api_get_api);
     server.on("/api", HTTP_POST, nullRequest, NULL, api_post_api);
-    server.on("/api/scene", HTTP_POST, nullRequest, NULL, api_post_scene);
 
     server.onNotFound(notFound);
     server.begin();
@@ -131,69 +126,46 @@ void api_post_api(AsyncWebServerRequest *request, uint8_t *data, size_t len, siz
         return;
     };
 
-    //parse device
-    Device dev = parseDevice((char*)data);
-    if (dev.id==-1) {
+    //decode json
+    StaticJsonDocument<500> doc;
+    DeserializationError error = deserializeJson(doc, (char*)data);
+    if (error) {
+    Serial.print("deserializeJson() failed: ");
+    Serial.println(error.c_str());
       request->send(422, "application/json", "{\"result\":\"error\"}");
       return;
     };
 
-    //add task
-    taskManager.addTask(command_set_device, dev);
+    //set scene shortcut
+    int scene=doc["scene"];
+    if(scene>0){
+        request->send(200, "application/json", JSON_OK);
+        taskManager.addTask(command_set_scene, 0, scene);
+        return;
+    }
+
+    //set device
+    Device dev;
+    dev.id=doc["id"];
+    dev.payload=doc["payload"];
+    if(!(dev.id==0&&dev.payload==0))
+        taskManager.addTask(command_set_device, dev);
     request->send(200, "application/json", JSON_OK);
 }
-
-Device parseDevice(String jsonStr){
-  Device ret;
-  ret.id=-1;
-
-  //decode json
-  StaticJsonDocument<500> doc;
-  DeserializationError error = deserializeJson(doc, jsonStr);
-  if (error) {
-    Serial.print("deserializeJson() failed: ");
-    Serial.println(error.c_str());
-    return ret;
-  };
-
-  //parse device
-  ret.id=doc["id"];
-  ret.payload=doc["payload"];
-  
-  return ret;
- };
-
 
 /////////////////////////////////////
 // Scenes
-void api_post_scene(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
-    int rawScene = parseScene((char*)data);
-    if(rawScene==-1) return;
-    taskManager.addTask(command_set_scene, 0, rawScene);
-    request->send(200, "application/json", JSON_OK);
-}
-
- int parseScene(String jsonStr){
-    //decode json
-    StaticJsonDocument<500> doc;
-    DeserializationError error = deserializeJson(doc, jsonStr);
-    if (error) {
-        Serial.print("deserializeJson() failed: ");
-        Serial.println(error.c_str());
-        return -1;
-    };
-    return doc["scene"];
- };
-
 void renderScene(int sceneId){
     SceneEnm scene = (SceneEnm)sceneId;
-    switch (scene)
-    {
+    switch (scene){
     case scene_hello:
+        Serial.println("renderScene(scene_hello)");
         break;
     case scene_sleep:
+        Serial.println("renderScene(scene_sleep)");
         break;
     case scene_goobye:
+        Serial.println("renderScene(scene_goobye)");
         break;
     }
 };
