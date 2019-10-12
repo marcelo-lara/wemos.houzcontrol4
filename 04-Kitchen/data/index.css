@@ -1,0 +1,5 @@
+body {background-color: #000; box-sizing: border-box; margin:0; padding: 0; transition: all .1s;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: #eee}
+h1 {margin: 5pt 0; font-size: 12pt; font-weight: 500;}
+div.panel{display:flex; flex-wrap: nowrap; align-content: center;}
+div.panel>div{cursor:pointer;flex: 1 1 25vw;padding: 5pt; margin: 1pt;  background: #666; width: 25vw; height: 25vw; max-width: 25vw; max-height: 20vw;}
+div.on {background-color: #090 !important}
