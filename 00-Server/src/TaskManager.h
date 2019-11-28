@@ -4,7 +4,8 @@
 
 enum Command{
     command_set_device = 1,
-    command_set_scene  = 2
+    command_set_scene  = 2,
+    command_rf_send    = 3
 };
 
 struct Device {
@@ -29,7 +30,7 @@ public:
 class TaskManager{
 public:
     void addTask(Command _command, Device _device);
-    void addTask(Command _command, int _deviceId, long _payload);
+    void addTask(Command _command, int _deviceId, u32 _payload);
     bool arePendingTasks();
     Task getNextTask();
 private:
