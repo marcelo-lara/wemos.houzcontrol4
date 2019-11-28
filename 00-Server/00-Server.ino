@@ -1,8 +1,8 @@
 #include "Arduino.h"
 #include "wemos.setup.h"
 
-#include <ESPAsyncWebServer.h>
-AsyncWebServer server(80);
+//#include <ESPAsyncWebServer.h>
+//AsyncWebServer server(80);
 
 #include <RF24.h>
 #define rf_ce   2 //D4
@@ -21,7 +21,7 @@ WebServer webServer;
 void setup(){
     wemosWiFi.connect("houzserver");
     webServer.setup();
-    apiSetup();
+    //apiSetup();
 };
 
 void loop(){
@@ -36,29 +36,29 @@ void runTask(){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // API
-void apiSetup(){
+// void apiSetup(){
 
 
 
-};
+// };
 
-// replace node devices with received values
-void api_setNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){}
+// // replace node devices with received values
+// void api_setNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){}
 
-// update node device with received values
-void api_updateNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){}
+// // update node device with received values
+// void api_updateNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){}
 
-// request to deliver a RF packet
-void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){}
+// // request to deliver a RF packet
+// void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){}
 
-// response with all nodes and devices
-void api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){}
+// // response with all nodes and devices
+// void api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){}
 
-// response to node keepalive query
-void api_pingReply(AsyncWebServerRequest *request){request->send(200, "application/json", "{\"result\":\"ok\"}");}
+// // response to node keepalive query
+// void api_pingReply(AsyncWebServerRequest *request){request->send(200, "application/json", "{\"result\":\"ok\"}");}
 
-void notFound(AsyncWebServerRequest *request) {request->send(404, "text/plain", "Not found");}
-void nullRequest(AsyncWebServerRequest *request){};
+// void notFound(AsyncWebServerRequest *request) {request->send(404, "text/plain", "Not found");}
+// void nullRequest(AsyncWebServerRequest *request){};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void devicePrint(Device dev){
