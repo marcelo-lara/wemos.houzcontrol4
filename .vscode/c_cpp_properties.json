@@ -5,7 +5,8 @@
             "includePath": [
                 "C:\\Users\\darkangel\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools\\**",
                 "C:\\Users\\darkangel\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.5.2\\**",
-                "C:\\Dropbox\\11-Electronics\\02-Libraries\\**"
+                "C:\\Dropbox\\11-Electronics\\02-Libraries\\**",
+                "C:\\Users\\darkangel\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.1\\**"
             ],
             "forcedInclude": [],
             "intelliSenseMode": "gcc-x86",
