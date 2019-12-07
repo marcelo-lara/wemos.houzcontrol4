@@ -1,6 +1,6 @@
 #include "WebServer.h"
-#include <ESPAsyncWebServer.h>
 AsyncWebServer server(80);
+const String JSON_OK = "{\"result\":\"ok\"}";
 
 //declarations
 void notFound(AsyncWebServerRequest *request);
@@ -10,6 +10,10 @@ void api_setNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len
 void api_updateNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
 void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
 void api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
+
+WebServer::WebServer(TaskManager *_taskManager){
+    taskManager = _taskManager;
+};
 
 void WebServer::setup(){
     Serial.println("--WebServer.setup()--");
@@ -29,21 +33,12 @@ void WebServer::setup(){
     DefaultHeaders::Instance().addHeader("Expires", "0");
     DefaultHeaders::Instance().addHeader("Server", "HouzControl/4.0.0");
 
-
-    // -> node status
-    server.on("/api/status", HTTP_POST, nullRequest, NULL, api_setNodeStatus);
-
-    // -> node update
-    server.on("/api/update", HTTP_POST, nullRequest, NULL, api_updateNodeStatus);
-
-    // -> status request
-    server.on("/api", HTTP_GET, api_pingReply);
-
-    // <- rf send request
-    server.on("/api/send", HTTP_POST, nullRequest, NULL, api_sendRfRequest);
-
-    // <- node status    
-    server.on("/api", HTTP_POST, nullRequest, NULL, api_serverStatus);
+    //api endpoints    
+    server.on("/api/status", HTTP_POST, nullRequest, NULL, api_setNodeStatus);    // -> node status
+    server.on("/api/update", HTTP_POST, nullRequest, NULL, api_updateNodeStatus); // -> node update
+    server.on("/api/rfsend", HTTP_POST, nullRequest, NULL, api_sendRfRequest);    // <- rf send request
+    server.on("/api", HTTP_GET, api_pingReply);                                   // -> status request
+    server.on("/api", HTTP_POST, nullRequest, NULL, api_serverStatus);            // <- node status    
 
     server.onNotFound(notFound);
     server.begin();
@@ -65,28 +60,86 @@ void nullRequest(AsyncWebServerRequest *request){};
 
 // keepalive query response
 void api_pingReply(AsyncWebServerRequest *request){
-    request->send(200, "application/json", "{\"result\":\"ok\"}");
+  Serial.println("::api_pingReply");
+  request->send(200, "application/json", "{\"result\":\"ok\"}");
 };
 
 // replace node devices with received values
 void api_setNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
-    request->send(200, "application/json", "{\"status\":\"ok\"}");
+  Serial.println("::api_setNodeStatus");
+
+  //decode json
+  StaticJsonDocument<500> doc;
+  DeserializationError error = deserializeJson(doc, (char *)data);
+  if (error)
+  {
+    Serial.print("deserializeJson() failed: ");
+    Serial.println(error.c_str());
+    request->send(422, "application/json", "{\"result\":\"error\"}");
+    return;
+  };
+
+  //set scene shortcut
+  int scene = doc["scene"];
+  if (scene > 0){
+    request->send(200, "application/json", JSON_OK);
+    taskManager.addTask(command_set_scene, 0, scene);
+    return;
+  }
+
+  //set device
+  Device dev;
+  dev.id = doc["id"];
+  dev.payload = doc["payload"];
+  if (!(dev.id == 0 && dev.payload == 0))
+    taskManager.addTask(command_set_device, dev);    
+  request->send(200, "application/json", "{\"status\":\"ok\"}");
 }
 
 // // update node device with received values
 void api_updateNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
-    request->send(200, "application/json", "{\"status\":\"ok\"}");
+  Serial.println("::api_updateNodeStatus");
+  request->send(200, "application/json", "{\"status\":\"not implemented\"}");
 }
 
 // // request to deliver a RF packet
 void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
-    request->send(200, "application/json", "{\"status\":\"ok\"}");
-}
+  Serial.println("::api_sendRfRequest");
+  //decode json
+  StaticJsonDocument<500> doc;
+  DeserializationError error = deserializeJson(doc, (char *)data);
+  Serial.println("- deserializeJson");
 
+  if (error){
+    Serial.print("deserializeJson() failed: ");
+    Serial.println(error.c_str());
+    request->send(422, "application/json", "{\"result\":\"error parsing json\"}");
+    return;
+  };
+  Serial.println("- set device");
+
+  //set device
+  Device dev;
+  dev.id = doc["channel"];
+  dev.node = doc["node"];
+  dev.payload = doc["payload"];
+
+  if (!(dev.id == 0 && dev.payload == 0)){
+    Serial.println("- add ok");
+    taskManager.addTask(command_rf_send, dev);    
+    request->send(200, "application/json", "{\"status\":\"packet enqueed\"}");
+  }else{
+    Serial.println("- add error");
+    request->send(200, "application/json", "{\"status\":\"error on data\"}");
+  }
+    Serial.println("- done");
+
+};
 
 // // response with all nodes and devices
 void api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
-    request->send(200, "application/json", "{\"status\":\"ok\"}");
+  Serial.println("::api_serverStatus");
+  request->send(200, "application/json", "{\"status\":\"not implemented\"}");
 }
 
 

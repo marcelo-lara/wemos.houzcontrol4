@@ -50,8 +50,7 @@ void loop()
 
 void taskWorker()
 {
-  if (!taskManager.arePendingTasks())
-    return; //nothing to do...
+  if (!taskManager.arePendingTasks()) return; 
   Task task = taskManager.getNextTask();
 
   //scene shortcut
