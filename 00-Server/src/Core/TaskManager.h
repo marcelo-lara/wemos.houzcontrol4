@@ -1,7 +1,8 @@
 #pragma once
 #include "Arduino.h"
-#include "HouzModel.h"
+#include "Model.h"
 #include "QueueArray.h"
+
 
 class TaskManager{
 public:
@@ -9,7 +10,12 @@ public:
     void addTask(Command _command, int _deviceId, long _payload);
     bool arePendingTasks();
     Task getNextTask();
+
+    static TaskManager* getInstance();
 private:
     QueueArray<Task> taskQueue;
+    static TaskManager* instance;
+    TaskManager();
+
 };
-extern TaskManager taskManager;
+

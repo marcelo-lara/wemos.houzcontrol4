@@ -9,10 +9,10 @@ void api_pingReply(AsyncWebServerRequest *request);
 void api_setNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
 void api_updateNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
 void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
-void api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
 
-WebServer::WebServer(TaskManager *_taskManager){
-    taskManager = _taskManager;
+
+WebServer::WebServer(){
+    devices = devices->getInstance();
 };
 
 void WebServer::setup(){
@@ -44,6 +44,8 @@ void WebServer::setup(){
     server.begin();
 
 };
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Generics
@@ -78,12 +80,13 @@ void api_setNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len
     request->send(422, "application/json", "{\"result\":\"error\"}");
     return;
   };
+  TaskManager *taskManager = taskManager->getInstance();
 
   //set scene shortcut
   int scene = doc["scene"];
   if (scene > 0){
     request->send(200, "application/json", JSON_OK);
-    taskManager.addTask(command_set_scene, 0, scene);
+    taskManager->addTask(command_set_scene, 0, scene);
     return;
   }
 
@@ -92,23 +95,22 @@ void api_setNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len
   dev.id = doc["id"];
   dev.payload = doc["payload"];
   if (!(dev.id == 0 && dev.payload == 0))
-    taskManager.addTask(command_set_device, dev);    
+    taskManager->addTask(command_set_device, dev);    
   request->send(200, "application/json", "{\"status\":\"ok\"}");
-}
+};
 
 // // update node device with received values
 void api_updateNodeStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
   Serial.println("::api_updateNodeStatus");
   request->send(200, "application/json", "{\"status\":\"not implemented\"}");
-}
+};
 
-// // request to deliver a RF packet
+// request to deliver a RF packet
 void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
   Serial.println("::api_sendRfRequest");
   //decode json
   StaticJsonDocument<500> doc;
   DeserializationError error = deserializeJson(doc, (char *)data);
-  Serial.println("- deserializeJson");
 
   if (error){
     Serial.print("deserializeJson() failed: ");
@@ -116,7 +118,6 @@ void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len
     request->send(422, "application/json", "{\"result\":\"error parsing json\"}");
     return;
   };
-  Serial.println("- set device");
 
   //set device
   Device dev;
@@ -125,22 +126,30 @@ void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len
   dev.payload = doc["payload"];
 
   if (!(dev.id == 0 && dev.payload == 0)){
-    Serial.println("- add ok");
-    taskManager.addTask(command_rf_send, dev);    
+    TaskManager::getInstance()->addTask(command_rf_send, dev);    
     request->send(200, "application/json", "{\"status\":\"packet enqueed\"}");
   }else{
-    Serial.println("- add error");
     request->send(200, "application/json", "{\"status\":\"error on data\"}");
   }
-    Serial.println("- done");
-
 };
 
-// // response with all nodes and devices
-void api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
+// response with all nodes and devices 
+void WebServer::api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
+  Devices *dev = dev->getInstance();
+  
   Serial.println("::api_serverStatus");
-  request->send(200, "application/json", "{\"status\":\"not implemented\"}");
-}
-
-
-
+  String jsonStr;
+  jsonStr = "{";
+  jsonStr += "\"devs\": [";
+  for (int i = 0; i < dev->deviceListLen; i++)
+  {
+    jsonStr += "{\"id\": ";
+    jsonStr += dev->deviceList[i].id;
+    jsonStr += ", \"val\": ";
+    jsonStr += dev->deviceList[i].payload;
+    jsonStr += "]";
+    if(i != dev->deviceListLen) jsonStr += ", ";
+  }
+  jsonStr += "]}";
+  request->send(200, "application/json", jsonStr);
+};

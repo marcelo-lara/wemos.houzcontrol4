@@ -2,7 +2,6 @@
 #include "Arduino.h"
 typedef void (*LightStatusChange)(int deviceId, int newStatus);
 
-
 class Light {
 public:
     int id;

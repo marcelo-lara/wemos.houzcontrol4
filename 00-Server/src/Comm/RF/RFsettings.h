@@ -1,6 +1,5 @@
 #pragma once
 
-///////////////////////////////////////////////////////////////////
 // channels
 #define rfChannel		0x5B   
 #define rf_server_tx	0xA0
@@ -13,3 +12,10 @@
 #define rf_living_rx	0xB3
 #define rf_wemos_tx		0xA4
 #define rf_wemos_rx		0xB4
+
+// commands
+#define RFCMD_QUERY			0xA
+#define RFCMD_VALUE			0xB
+#define RFCMD_SET			0xC
+#define RFCMD_EVENT			0xD
+#define RFCMD_STATUS		0xE

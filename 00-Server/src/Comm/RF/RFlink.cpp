@@ -9,15 +9,11 @@ RFcodec* codec;
 #define rf_csn 15 //D8
 RF24 radio(rf_ce,rf_csn);
 
-
-RFlink::RFlink(TaskManager *_taskManager, RFrxCallback rxEvent){
-    taskManager = _taskManager;
+RFlink::RFlink(RFrxCallback rxEvent){
     raiseRxEvent = rxEvent;
 }
 
 void RFlink::setup(){
-    Serial.println("--RF setup--");
-
     ready=false;
     radio.begin();
     radio.setPALevel(RF24_PA_HIGH); //RF24_PA_HIGH | RF24_PA_LOW | RF24_PA_MAX
@@ -35,9 +31,10 @@ void RFlink::setup(){
 
     //debug
     ready = (rfChannel == radio.getChannel()); //test if radio is enabled
-    radio.printDetails();
+    //radio.printDetails();
     Serial.println(ready?"rf online":"rf offline");
 }
+
 void RFlink::update(){
 
 	//if radio is not enabled, discard anything
@@ -57,17 +54,18 @@ void RFlink::update(){
 	radio.startListening();
 
 	//decode payload
-	deviceData device = codec->decode(_radioPayLoad, _radioNode);
-  Serial.print("RFrx\t");
+	deviceData dev = codec->decode(_radioPayLoad, _radioNode);
+  Serial.print("RF<-\t");
   Serial.print(_radioNode, HEX);
-  Serial.print(">");
+  Serial.print("|");
   Serial.println(_radioPayLoad, HEX);
 
-  raiseRxEvent(device);
+  //delegate
+  raiseRxEvent(dev);
 }
 
 bool RFlink::send(DevicePkt dev){
-  Serial.print("RFtx\t");
+  Serial.print("RF->\t");
 
 	//open write pipe
 	uint64_t writeAddress;
@@ -79,7 +77,7 @@ bool RFlink::send(DevicePkt dev){
   u32 msg = deviceEncode(dev);
 
   Serial.print(dev.node, HEX);
-  Serial.print(">");
+  Serial.print("|");
   Serial.print(msg, HEX);
   Serial.print("\t");
 

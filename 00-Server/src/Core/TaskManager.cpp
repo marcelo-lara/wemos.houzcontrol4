@@ -27,4 +27,11 @@ Task TaskManager::getNextTask(){
     return taskQueue.dequeue();
 };
 
-TaskManager taskManager;
+// instance ///////////////////////////////////
+TaskManager* TaskManager::getInstance(){
+  if(instance==0) instance=new TaskManager();
+  return instance;
+};
+TaskManager::TaskManager(){
+};
+TaskManager* TaskManager::instance = 0;

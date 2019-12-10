@@ -1,19 +1,29 @@
 #pragma once
 #include "Arduino.h"
 
+
+///////////////////////////////////////////////////////////////////////////
+// DEVICE
+
 struct Device {
 public:
-    u8  id;
-    u8  node;
-	u32 payload;
+  u8  id;       //channel
+  u8  node;     //node
+	u32 payload;  //value
 };
 
+
+// fixed scenes
 enum SceneEnm{
     scene_unknown = 0,
     scene_sleep   = 1,
     scene_goobye  = 2,
     scene_hello   = 3
 };
+
+
+///////////////////////////////////////////////////////////////////////////
+// TASKS
 
 // Task Command
 enum Command{
@@ -28,5 +38,6 @@ enum Command{
 struct Task {
 public:
     Command command;
-    Device device;
+    Device  device;
 };
+
