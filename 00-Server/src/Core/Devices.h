@@ -116,4 +116,10 @@ public:
       {living_AC		     ,living_node, 0}
     };
 
+  static void printDevice(Device device){
+    Serial.print("id  \t");
+    Serial.println(device.id, HEX);
+    Serial.print("payload\t");
+    Serial.println(device.payload, HEX);
+  };
 };
