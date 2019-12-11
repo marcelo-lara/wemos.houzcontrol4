@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+      "functional": "cpp",
+      "bitset": "cpp",
+      "set": "cpp",
+      "random": "cpp",
+      "array": "cpp",
+      "*.tcc": "cpp",
+      "memory": "cpp",
+      "istream": "cpp",
+      "tuple": "cpp",
+      "utility": "cpp"
+    }
+}
