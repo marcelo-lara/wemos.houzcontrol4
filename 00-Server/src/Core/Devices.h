@@ -4,6 +4,9 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Devices Config
+// template: NCC  [node|channel]
+
+
 
 // Master
 #define server_node			0x00    //N0DA000000 ping?
@@ -37,19 +40,19 @@
 #define living_node       0x3	 //N3DC04F0F0\n
 #define living_switch		  0x31
 
-  #define living_dicro_1    0x0
-  #define living_dicro_2    0x1
-  #define living_dicro_3    0x2
-  #define living_dicro_4    0x4
-  #define living_dicro_5    0x5
-  #define living_dicro_6    0x6
-  #define living_dicro_7    0x7
-  #define living_dicro_8    0x8
-  #define living_main       0x9
-  #define living_booksh     0xA
-  #define living_corner     0xB
-  #define living_fx1        0xC
-  #define living_fx2        0xD
+#define living_dicro_1    0x300
+#define living_dicro_2    0x301
+#define living_dicro_3    0x302
+#define living_dicro_4    0x304
+#define living_dicro_5    0x305
+#define living_dicro_6    0x306
+#define living_dicro_7    0x307
+#define living_dicro_8    0x308
+#define living_main       0x309
+#define living_booksh     0x30A
+#define living_corner     0x30B
+#define living_fx1        0x30C
+#define living_fx2        0x30D
 
 //composite devices [legacy]
 #define living_rawRender	0x32 //N3DC320099\n 
@@ -82,7 +85,7 @@ public:
     Device* get(u8 deviceId);
     void set(u8 deviceId, u32 payload);
 
-    Device deviceList[31]{ 
+    Device deviceList[44]{ 
       {server_node	     ,server_node, 0},
       {server_rf         ,server_node, 0},
       {office_node	     ,office_node, 0},
@@ -113,6 +116,19 @@ public:
       {living_spotLight  ,living_node, 0},
       {living_fxLight	   ,living_node, 0},
       {living_fx		     ,living_node, 0},
+      {living_dicro_1    ,living_node, 0},
+      {living_dicro_2    ,living_node, 0},
+      {living_dicro_3    ,living_node, 0},
+      {living_dicro_4    ,living_node, 0},
+      {living_dicro_5    ,living_node, 0},
+      {living_dicro_6    ,living_node, 0},
+      {living_dicro_7    ,living_node, 0},
+      {living_dicro_8    ,living_node, 0},
+      {living_main       ,living_node, 0},
+      {living_booksh     ,living_node, 0},
+      {living_corner     ,living_node, 0},
+      {living_fx1        ,living_node, 0},
+      {living_fx2        ,living_node, 0},
       {living_AC		     ,living_node, 0}
     };
 
