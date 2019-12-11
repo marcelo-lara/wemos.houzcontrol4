@@ -17,5 +17,5 @@ private:
 public:
   SceneManager();
   void play(int sceneId);
-  void play(SceneStep *scene);
+  void play(SceneStep *scene, int scene_lenght);
 };
