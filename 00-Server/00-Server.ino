@@ -11,33 +11,9 @@ SceneManager sceneManager;
 void onRFrxCallback(deviceData devicePacket);
 RFlink rfLink(onRFrxCallback);
 
+//API server
 #include "WebServer.h"
 WebServer webServer;
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-enum NodeStatus{
-    nodeStatus_unknown = 0,
-    nodeStatus_up  = 1,
-    nodeStatus_down = 2
-};
-enum NodeType{
-    nodetype_rf = 0,
-    nodetype_api  = 1
-};
-
-struct Node {
-    int  id;
-    long lastUpdate;
-    NodeStatus status;
-    NodeType nodeType;
-};
-
-Node nodeList[] = {
-    {office_node, 0, nodeStatus_unknown, nodetype_rf},
-    {suite_node, 0, nodeStatus_unknown, nodetype_rf},
-    {living_node, 0, nodeStatus_unknown, nodetype_rf}
-};
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,10 +23,6 @@ void setup(){
     rfLink.setup();
     devices->set(server_rf, rfLink.ready);
     Serial.println("-- setup complete ---------------");
-
-///////////////////////////////////////////////////
-  sceneManager.play(scene_sleep);
-
 };
 
 void loop(){
@@ -62,8 +34,7 @@ void loop(){
 void runTask(){
     Task task = TaskManager::getInstance()->getNextTask();
     Serial.print("task> ");
-    switch (task.command)
-    {
+    switch (task.command){
     case command_set_device: 
         Serial.println("command_set_device");
         break;
@@ -80,6 +51,7 @@ void runTask(){
 
     case command_play_scene: 
         Serial.println("command_play_scene");
+        sceneManager.play(task.device.payload);
         break;
     
     default:
@@ -93,12 +65,5 @@ void onRFrxCallback(deviceData dev){
   devices->set(dev.id, dev.payload);
 };
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void devicePrint(Device dev){
-  Serial.print("id  \t");
-  Serial.println(dev.id, HEX);
-  Serial.print("payload\t");
-  Serial.println(dev.payload, HEX);
-};
 
 
