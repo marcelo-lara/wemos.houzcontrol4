@@ -4,7 +4,7 @@
 // HouzControl4 modules
 #include "src/Core/HausCore.h"
 Devices *devices = devices->getInstance();
-
+SceneManager sceneManager;
 
 //RF link
 #include "src/Comm/RF/RFlink.h"
@@ -49,8 +49,7 @@ void setup(){
     Serial.println("-- setup complete ---------------");
 
 ///////////////////////////////////////////////////
-  Serial.print("deviceCount: ");
-  Serial.println(devices->deviceListLen);
+  sceneManager.play(scene_sleep);
 
 };
 

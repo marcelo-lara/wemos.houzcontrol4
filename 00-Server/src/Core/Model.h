@@ -12,26 +12,17 @@ public:
 	u32 payload;  //value
 };
 
-
-// fixed scenes
-enum SceneEnm{
-    scene_unknown = 0,
-    scene_sleep   = 1,
-    scene_goobye  = 2,
-    scene_hello   = 3
-};
-
-
 ///////////////////////////////////////////////////////////////////////////
 // TASKS
 
 // Task Command
 enum Command{
-    command_set_device = 1,
+    command_set_device  = 1,
     command_play_scene  = 2,
-    command_set_scene  = 3,
-    command_rf_send    = 4, 
-    command_ir_send    = 5
+    command_set_scene   = 3,
+    command_rf_send     = 4, 
+    command_ir_send     = 5,
+    command_scene_pause = 9
 };
 
 // Task
@@ -41,3 +32,24 @@ public:
     Device  device;
 };
 
+
+
+///////////////////////////////////////////////////////////////////////////
+// SCENES
+
+
+// fixed scenes
+#define scene_unknown 0
+#define scene_sleep   1
+#define scene_goobye  2
+#define scene_hello   3
+
+class Scene {
+public:
+  int  id;
+  Scene(int cueLenght): capacity(cueLenght) {_cue = new Task[cueLenght];}
+  
+private:
+  const int capacity;
+  Task *_cue;
+};
