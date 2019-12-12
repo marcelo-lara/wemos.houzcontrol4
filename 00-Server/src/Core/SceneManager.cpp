@@ -27,6 +27,7 @@ void SceneManager::play(int sceneId){
     break;
 
   default:
+    Serial.printf("--> scene %i doesn't exist??\n", sceneId);
     break;
   }
 

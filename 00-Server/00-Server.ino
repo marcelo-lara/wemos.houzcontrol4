@@ -36,7 +36,9 @@ void runTask(){
     Serial.print("task> ");
     switch (task.command){
     case command_set_device: 
-        Serial.println("command_set_device");
+        Serial.println("TASK| command_set_device");
+        Serial.print("\tdevice: ");
+        Serial.println(task.device.id, HEX);
         break;
 
     case command_rf_send: 

@@ -40,19 +40,19 @@
 #define living_node       0x3	 //N3DC04F0F0\n
 #define living_switch		  0x31
 
-#define living_dicro_1    0x300
-#define living_dicro_2    0x301
-#define living_dicro_3    0x302
-#define living_dicro_4    0x304
-#define living_dicro_5    0x305
-#define living_dicro_6    0x306
-#define living_dicro_7    0x307
-#define living_dicro_8    0x308
-#define living_main       0x309
-#define living_booksh     0x30A
-#define living_corner     0x30B
-#define living_fx1        0x30C
-#define living_fx2        0x30D
+#define living_dicro_1    0x90
+#define living_dicro_2    0x91
+#define living_dicro_3    0x92
+#define living_dicro_4    0x94
+#define living_dicro_5    0x95
+#define living_dicro_6    0x96
+#define living_dicro_7    0x97
+#define living_dicro_8    0x98
+#define living_main       0x99
+#define living_booksh     0x9A
+#define living_corner     0x9B
+#define living_fx1        0x9C
+#define living_fx2        0x9D
 
 //composite devices [legacy]
 #define living_rawRender	0x32 //N3DC320099\n 
