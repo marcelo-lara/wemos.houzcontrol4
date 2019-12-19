@@ -1,0 +1,67 @@
+/*////////////////////////////
+// Layout
+*/
+div.wrapper{display:grid;grid-template-columns:repeat(12 fr);grid-template-rows:10vh auto 20vh 10vh;
+  grid-template-areas:
+      "title title title scene scene scene scene scene scene scene status status" 
+      "rooms rooms rooms panel panel panel panel panel panel panel panel panel" 
+      "wtemp wtemp weather panel panel panel panel panel panel panel panel panel" 
+      "whum wpres weather foot foot foot foot foot foot foot foot power";
+      height:100vh}
+div.wrapper>div{display:flex;justify-content:center;align-items:center}
+div.title{grid-area:title;background:url(images/hauskontrol.svg) no-repeat 0 0;background-size:15vw;margin:20px}
+div.rooms{grid-area:rooms}
+div.status{grid-area:status}
+div.wtemp{grid-area:wtemp}
+div.wpres{grid-area:wpres}
+div.whum{grid-area:whum}
+div.weather{grid-area:weather}
+div.scene{grid-area:scene}
+div.panel{grid-area:panel}
+div.foot{grid-area:foot}
+div.power{grid-area:power}
+
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Common behaviors
+*/
+.btn {background:#FFF1;margin: 1pt 1pt 0 0;cursor:pointer;}
+.btn:hover {background:#FFF2;transition: all 1s;}
+.btn::after{font-family:"Font Awesome 5 Free";font-weight:900;padding:0 0 0 5pt}
+
+.btn.s {width: 5vw; height:5vw;}
+.btn.m {width: 10vw; height:10vw;}
+
+/*////////////////////////////
+// room selector
+*/
+div.rooms{flex-direction:column}
+div.rooms>div{flex:1;width:100%;padding:2vw;margin:1pt 1pt 1pt 0;display:flex;align-items:flex-end;background:#66666633;cursor:pointer;transition: background-color 0.5s;}
+div.rooms>div:hover{background:#66666666}
+div.rooms>div>span{flex:1}
+
+/* room icons */
+div.rooms>div::after{font-family:"Font Awesome 5 Free";font-weight:900;padding:0 0 0 10pt}
+div.rooms>div.suite::after  {content: "\f236"}
+div.rooms>div.living::after {content: "\f5ce"}
+div.rooms>div.office::after {content: "\f108"}
+div.rooms>div.kitchen::after{content: "\f2e7"}
+div.rooms>div.on {background:#7f15a849}
+
+/*////////////////////////////
+// devices/scenes panel
+*/
+div.wrapper>div.panel {display: flex;flex-wrap: wrap;padding: 5pt;flex-direction: column;max-height: 75vh;}
+div.panel div.btn{width: 10vw;height:10vw;padding: 5pt;flex: 1 1 10vw;max-width: 10vw;max-height: 10vw;}
+div.panel div.btn.on{background:#66FF6666}
+
+div.fan {position: relative}
+div.fan>div{position: absolute;padding: 5pt;width: 30%;}
+div.fan>div:first-child{top:0;left:0;width: 70%;height: 100%;}
+div.fan>div.up{top:0; right:0}
+div.fan>div.down{bottom:0; right:0}
+div.fan>div.speed{right: 0; top:4vh}
+/*////////////////////////////
+// footer items
+*/
+div.power>div::after{content: "\f011"}
