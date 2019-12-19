@@ -9,8 +9,8 @@
 
 
 // Master
-#define server_node			0x00    //N0DA000000 ping?
-#define server_rf 			0x01    // 0: offline / 1: online 
+#define server_node			  0x00    //N0DA000000 ping?
+#define server_rf 			  0x01    // 0: offline / 1: online 
 
 // Office
 #define office_node			  0x01  //N1DC04F0F0
@@ -62,7 +62,7 @@
 #define living_fxLight		0x36 //N3DC360000\n - 54 guidance leds
 #define living_fx			    0x37 //N3DC370000\n - 55 fx 'scene' render
 
-#define living_AC		    0x38 //N3DC380001\n
+#define living_AC		      0x38 //N3DC380001\n
 
 // scenes lighting fx
 #define fx_dicroOn	0x1
