@@ -11,9 +11,9 @@ typedef void (*ButtonEventCallback)(int _click);
 class Button{
 private:
     int _btnGpio;
-	bool inSw_lastStatus;
-	unsigned long inSw_lastMs;
-	unsigned long inSw_downMs;
+  bool inSw_lastStatus;
+  unsigned long inSw_lastMs;
+  unsigned long inSw_downMs;
     int inSwitchCount;
     ButtonEventCallback onEvent;
 
