@@ -15,14 +15,26 @@ const ui={
           break;
       
         case devType.Fan:
-          dev.elem = el("<div class=\"btn fan\"><div>fan</div><div class=\"up\">+</div><div class=\"speed\">3</div><div class=\"down\">-</div></div>");
-          dev.espeed = dev.elem.querySelector(".speed");
-          if(dev.val>0) dev.elem.classList.add("on");
+          //template
+          dev.elem = el("<div class=\"btn fan\"><div>fan</div><div class=\"up\"></div><div class=\"speed\"><span>-</span></div><div class=\"down\"></div></div>");
+          dev.espeed = dev.elem.querySelector(".speed span");
+
+          //setup
+          dev._on=dev.val>0;
+          dev.espeed.innerText=dev.val;
+          if(dev._on){
+            dev.elem.classList.add("on");
+            dev._speed=dev.val;
+          } 
+
+          // bindings //
+          //speed up
           dev.elem.querySelector(".up").addEventListener("click", ()=>{
             dev.speed++;
             if(dev.speed>4){dev.speed=4; dev.val=4;}
             dev.espeed.innerText=dev.speed;
           });
+          //speed down
           dev.elem.querySelector(".down").addEventListener("click", ()=>{
             dev.speed--;
             if(dev.speed<1){
@@ -31,8 +43,18 @@ const ui={
             }
             dev.espeed.innerText=dev.speed;
             });
+          //on/off
           dev.elem.querySelector("div:first-child").addEventListener("click", ()=>{
-            console.log("on/off");
+            //switch state
+            if(dev._on){
+              dev._on=false;
+              dev.val=0;
+              dev.elem.classList.remove("on");
+            }else{
+              dev._on=true;
+              dev.val=dev._speed;
+              dev.elem.classList.add("on");
+            };
           });
           break;
 
@@ -108,4 +130,4 @@ const ui={
 
 
 //setup
-(()=>{ui.setup();})();
+//(()=>{ui.setup();})();
