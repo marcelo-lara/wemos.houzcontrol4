@@ -9,7 +9,7 @@ struct DevicePkt: Device {
     int cmd;
 };
 
-typedef void (*RFrxCallback)(deviceData _deviceData);
+typedef void (*RFrxCallback)(Packet _Packet);
 
 class RFlink{
 public:

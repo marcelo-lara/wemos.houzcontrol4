@@ -11,8 +11,8 @@ unsigned long RFcodec::encode(int _cmd, int deviceId, unsigned long devicePayloa
 	retVal = (retVal << 16) + devicePayload;
 	return retVal;
 }
-deviceData RFcodec::decode(unsigned long rawData, unsigned long nodeId) {
-	deviceData decoded;
+Packet RFcodec::decode(unsigned long rawData, unsigned long nodeId) {
+	Packet decoded;
 	decoded.raw = rawData;
 	decoded.hasData = false;
 
@@ -28,8 +28,8 @@ deviceData RFcodec::decode(unsigned long rawData, unsigned long nodeId) {
 	return decoded;
 };
 
-deviceData RFcodec::decode(String str) { //from serial
-	deviceData dev;
+Packet RFcodec::decode(String str) { //from serial
+	Packet dev;
 	if (str.length() != 10 || str[0] != 'N' || str[2] != 'D')
 		return dev;
 

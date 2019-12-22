@@ -1,6 +1,6 @@
 #include "Arduino.h"
 
-struct deviceData {
+struct Packet {
 public:
 	u32  raw;
 	bool hasData;
@@ -18,8 +18,8 @@ public:
 class RFcodec{
     public:
         unsigned long encode(int _cmd, int deviceId, unsigned long devicePayload);
-    	deviceData decode(unsigned long rawData, unsigned long rfNodeStation);
-        deviceData decode(String str);
+    	  Packet decode(unsigned long rawData, unsigned long rfNodeStation);
+        Packet decode(String str);
 
 
         unsigned long StrToHex(char str[]);

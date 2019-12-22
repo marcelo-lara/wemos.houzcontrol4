@@ -54,7 +54,7 @@ void RFlink::update(){
 	radio.startListening();
 
 	//decode payload
-	deviceData dev = codec->decode(_radioPayLoad, _radioNode);
+	Packet dev = codec->decode(_radioPayLoad, _radioNode);
   Serial.print("RF<-\t");
   Serial.print(_radioNode, HEX);
   Serial.print("|");

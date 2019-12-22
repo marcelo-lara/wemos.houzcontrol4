@@ -8,7 +8,7 @@ SceneManager sceneManager;
 
 //RF link
 #include "src/Comm/RF/RFlink.h"
-void onRFrxCallback(deviceData devicePacket);
+void onRFrxCallback(Packet devicePacket);
 RFlink rfLink(onRFrxCallback);
 
 //API server
@@ -62,8 +62,8 @@ void runTask(){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RF hook
-void onRFrxCallback(deviceData dev){
-  devices->set(dev.id, dev.payload);
+void onRFrxCallback(Packet pkt){
+  devices->set(pkt.id, pkt.payload);
 };
 
 
