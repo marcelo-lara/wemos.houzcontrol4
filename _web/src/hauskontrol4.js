@@ -130,4 +130,4 @@ const ui={
 
 
 //setup
-//(()=>{ui.setup();})();
+(()=>{ui.setup();})();
