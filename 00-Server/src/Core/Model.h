@@ -9,7 +9,23 @@ struct Device {
 public:
   u8  id;       //channel
   u8  node;     //node
-	u32 payload;  //value
+  u32 payload;  //value
+};
+
+struct Fan: Device {
+  bool on;
+  u8   speed;
+};
+
+struct Ac: Device {
+  bool on;
+  bool fanOn;
+  u8   temp;
+};
+
+struct Light: Device {
+  bool on;
+  u8   muxId; //id of multpiplexed out
 };
 
 ///////////////////////////////////////////////////////////////////////////
