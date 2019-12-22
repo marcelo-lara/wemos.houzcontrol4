@@ -55,7 +55,7 @@
 #define living_fx2        0x9D
 
 //composite devices [legacy]
-#define living_rawRender	0x32 //N3DC320099\n 
+#define living_rawRender	0x32 //light control multiplexer
 #define living_mainLight	0x33 //N3DC330002\n - 51 center
 #define living_dicroLight	0x34 //N3DC340000\n - 52 2x4 dicro array
 #define living_spotLight	0x35 //N3DC350000\n - 53 spotlights
