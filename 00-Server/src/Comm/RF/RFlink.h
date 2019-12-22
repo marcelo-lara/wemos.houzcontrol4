@@ -1,6 +1,5 @@
 #pragma once
 #include "Arduino.h"
-#include "../../Core/HausCore.h"
 #include "RFsettings.h"
 #include "RFcodec.h"
 #include "Channels.h"
@@ -22,6 +21,5 @@ public:
 
 private:
     unsigned long deviceEncode(Packet pkt);
-    TaskManager *taskManager; //master task manager
     RFrxCallback raiseRxEvent;
 };
