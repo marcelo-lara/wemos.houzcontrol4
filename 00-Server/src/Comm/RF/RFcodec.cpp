@@ -14,13 +14,11 @@ unsigned long RFcodec::encode(int _cmd, int deviceId, unsigned long devicePayloa
 Packet RFcodec::decode(unsigned long rawData, unsigned long nodeId) {
 	Packet decoded;
 	decoded.raw = rawData;
-	decoded.hasData = false;
 
 	if (((rawData >> 28) == 0xD)) {
 		decoded.node = nodeId;
 
 		//parse values
-		decoded.hasData = true;
 		decoded.cmd = ((rawData >> 24) & 0x0F);
 		decoded.id = ((rawData >> 16) & 0x0FF);
 		decoded.payload = ((rawData) & 0x0000FFFF);
@@ -38,8 +36,6 @@ Packet RFcodec::decode(String str) { //from serial
 	dev.id = StrToHex(str.substring(4, 6));
 	dev.payload = StrToHex(str.substring(6, 10));
 	dev.raw = StrToHex(str.substring(3, 10));
-	dev.hasData = (dev.id != 0);
-	dev.message=str;
 	return dev;
 }
 

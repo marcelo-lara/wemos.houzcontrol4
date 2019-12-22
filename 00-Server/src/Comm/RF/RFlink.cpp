@@ -64,7 +64,7 @@ void RFlink::update(){
   raiseRxEvent(dev);
 }
 
-bool RFlink::send(DevicePkt dev){
+bool RFlink::send(Packet dev){
   Serial.print("RF->\t");
 
 	//open write pipe
@@ -90,10 +90,10 @@ bool RFlink::send(DevicePkt dev){
   Serial.println(result?"ok":"error");
 }
 
-unsigned long RFlink::deviceEncode(DevicePkt dev){
+unsigned long RFlink::deviceEncode(Packet pkt){
 	unsigned long retVal = 0xD;
-	retVal = (retVal << 4) + dev.cmd;
-	retVal = (retVal << 8) + dev.id;
-	retVal = (retVal << 16) + dev.payload;
+	retVal = (retVal << 4) + pkt.cmd;
+	retVal = (retVal << 8) + pkt.id;
+	retVal = (retVal << 16) + pkt.payload;
 	return retVal;
 }

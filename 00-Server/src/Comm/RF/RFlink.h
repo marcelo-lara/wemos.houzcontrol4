@@ -5,10 +5,6 @@
 #include "RFcodec.h"
 #include "Channels.h"
 
-struct DevicePkt: Device {
-    int cmd;
-};
-
 typedef void (*RFrxCallback)(Packet _Packet);
 
 class RFlink{
@@ -19,13 +15,13 @@ public:
     bool ready;
     
     //tx commands
-    bool send(DevicePkt dev);
+    bool send(Packet dev);
 
     //rx section
 
 
 private:
-    unsigned long deviceEncode(DevicePkt dev);
+    unsigned long deviceEncode(Packet pkt);
     TaskManager *taskManager; //master task manager
     RFrxCallback raiseRxEvent;
 };

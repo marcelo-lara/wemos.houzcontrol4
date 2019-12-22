@@ -42,12 +42,12 @@ void runTask(){
 
     case command_rf_send: 
         Serial.println("command_rf_send");
-        DevicePkt pkt;
+        {Packet pkt;
         pkt.id=task.device.id;
         pkt.cmd=RFCMD_QUERY;
         pkt.node=task.device.node;
         pkt.payload=task.device.payload;
-        rfLink.send(pkt);
+        rfLink.send(pkt);}
         break;
 
     case command_play_scene: 

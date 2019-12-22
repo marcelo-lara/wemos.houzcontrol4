@@ -1,18 +1,14 @@
 #include "Arduino.h"
 
+//RF packet
 struct Packet {
 public:
-	u32  raw;
-	bool hasData;
+	u8	 id;      //channel id
+	u8	 cmd;     //rfcmd enum
+	u32  payload; //32b payload
 
-	u8	 id;
-	u32  payload;
-
-	byte node;
-	u8	 cmd;
-	u8	 media;
-
-	String message;
+	byte node;    //rf station id
+	u32  raw;     //encoded packet
 };
 
 class RFcodec{
