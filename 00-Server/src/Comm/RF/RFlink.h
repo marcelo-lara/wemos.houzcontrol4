@@ -3,6 +3,7 @@
 #include "../../Core/HausCore.h"
 #include "RFsettings.h"
 #include "RFcodec.h"
+#include "Channels.h"
 
 struct DevicePkt: Device {
     int cmd;
