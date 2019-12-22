@@ -7,7 +7,7 @@ Devices *devices = devices->getInstance();
 SceneManager sceneManager;
 
 //RF link
-#include "src/Comm/RF/RFlink.h"
+#include <RFlink.h>
 void onRFrxCallback(Packet devicePacket);
 RFlink rfLink(onRFrxCallback);
 
