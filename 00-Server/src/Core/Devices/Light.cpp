@@ -42,7 +42,7 @@ String Light::toJson(){
     json += ", \"zone\":";
     json += this->zone;
   };
-  json += ", \"on\":";
+  json += ", \"val\":";
   json += this->on?1:0;
 
   json += "}";
