@@ -22,9 +22,11 @@ void setup(){
     //rfLink.setup();
     Serial.println("-- setup complete ---------------");
   Serial.println("--");
-  Serial.print("suite_light: ");
-  Serial.print(devices->getLight(suite_light)->id,HEX);
-
+  Serial.println("suite_light: ");
+  
+  Light *light = devices->getLight(suite_light);
+  light->turnOn();
+  Serial.println(light->toJson());
 };
 
 void loop(){
@@ -45,12 +47,12 @@ void runTask(){
 
     case command_rf_send: 
         Serial.println("command_rf_send");
-        {Packet pkt;
-        pkt.id=task.device.id;
-        pkt.cmd=RFCMD_QUERY;
-        //pkt.node=task.device.node;
-        pkt.payload=task.device.payload;
-        rfLink.send(pkt);}
+        // {Packet pkt;
+        // pkt.id=task.device.id;
+        // pkt.cmd=RFCMD_QUERY;
+        // //pkt.node=task.device.node;
+        // pkt.payload=task.device.payload;
+        // rfLink.send(pkt);}
         break;
 
     case command_play_scene: 

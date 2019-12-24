@@ -25,16 +25,32 @@ Light::Light(int id, NodeEnm _node, u8 _muxCh, u8 _muxPos):Light(id, _muxCh, _mu
   this->node=_node;
 };
 
+
+//////////////////////////////////////////////////////////////////////
+// Actions
+String Light::toJson(){
+  String json = "{\"id\":";
+  json += this->id;
+  json += ", \"type\":";
+  json += this->type;
+  json += ", \"on\":";
+  json += this->on?1:0;
+
+  json += "}";
+  return json;
+};
+
 //////////////////////////////////////////////////////////////////////
 // Actions
 void Light::turnOn(){this->set(true);};
 void Light::turnOff(){this->set(false);};
 void Light::set(bool _on){
+  this->on=_on;
   if(this->isLocal){
     Serial.println("setLocalLight()");
   };
   if(this->node>0){
     Serial.println("sendCommandToNode()");
+    taskManager->addTask(command_rf_send, this->id, this->on?1:0);
   };
-  this->on=_on;
 };

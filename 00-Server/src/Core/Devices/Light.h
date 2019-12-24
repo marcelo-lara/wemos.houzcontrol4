@@ -1,6 +1,7 @@
 #pragma once
 #include "Arduino.h"
 #include "../Model.h"
+#include "../TaskManager.h"
 
 class Light: public Device {
 public:
@@ -9,6 +10,8 @@ public:
   Light(int id, NodeEnm _node, u8 _muxCh, u8 _muxPos);
   Light(int id, u8 _gpio);
   Light(int id, NodeEnm _node);
+  TaskManager *taskManager = TaskManager::getInstance();
+  String toJson();
 
   bool on      = false; //light status
   bool isMux   = false; //light is behind a multpiplexer
