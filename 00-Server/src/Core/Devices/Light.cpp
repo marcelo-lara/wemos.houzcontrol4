@@ -59,13 +59,13 @@ void Light::set(bool _on){
   };
   if(this->node>0){
     Serial.println("sendCommandToNode()");
-    taskManager->addTask(command_rf_send, this->id, this->on?1:0);
+    taskManager->addTask(command_rf_send, this->id, this->on?1:0, this->node);
   };
 };
 
 void Light::update(){
   if(!this->isLocal){
-    taskManager->addTask(command_rf_query, this->id, 0);
+    taskManager->addTask(command_rf_query, this->id, 0, this->node);
   }
 };
 void Light::update(long _payload){

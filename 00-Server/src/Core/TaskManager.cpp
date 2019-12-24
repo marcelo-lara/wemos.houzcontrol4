@@ -4,9 +4,10 @@
 QueueArray<Task> taskQueue;
 
 //Add a task to queue
-void TaskManager::addTask(Command _command, int _deviceId, long _payload){
+void TaskManager::addTask(Command _command, int _deviceId, long _payload, NodeEnm _node){
     Device dev;
     dev.id=_deviceId;
+    dev.node=_node;
     dev.payload=_payload;
     this->addTask((Command)_command, dev);
 };

@@ -7,7 +7,7 @@
 class TaskManager{
 public:
     void addTask(Command _command, Device _device);
-    void addTask(Command _command, int _deviceId, long _payload);
+    void addTask(Command _command, int _deviceId, long _payload, NodeEnm _node = node_server);
     bool arePendingTasks();
     Task getNextTask();
 

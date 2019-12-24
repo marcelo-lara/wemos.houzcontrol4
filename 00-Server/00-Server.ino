@@ -19,10 +19,10 @@ WebServer webServer;
 void setup(){
   wemosWiFi.connect("hauskontrol");
   webServer.setup();
-  //rfLink.setup();
+  rfLink.setup();
   Serial.println("-- setup complete ---------------");
 
-  devices->environments[0].update();
+  devices->lights[0].update();
   Serial.println(devices->toJson());
 };
 
@@ -33,33 +33,35 @@ void loop(){
 };
 
 void runTask(){
-    Task task = TaskManager::getInstance()->getNextTask();
-    Serial.print("TASK| ");
-    switch (task.command){
-    case command_set_device: 
-        Serial.println("command_set_device");
-        break;
+  Task task = TaskManager::getInstance()->getNextTask();
+  Serial.print("TASK| ");
+  switch (task.command){
+  case command_set_device: 
+    Serial.println("command_set_device");
+    break;
 
-    case command_rf_send: 
-        Serial.println("command_rf_send");
-        break;
+  case command_rf_send: 
+    Serial.println("command_rf_send");
+    break;
 
-    case command_play_scene: 
-        Serial.println("command_play_scene");
-        break;
+  case command_play_scene: 
+    Serial.println("command_play_scene");
+    break;
 
-    case command_rf_query: 
-        Serial.println("command_rf_query");
-        break;
+  case command_rf_query: 
+    Serial.println("command_rf_query");
+    rfLink.send(Packet(task.device.id, RFCMD_QUERY, 0, task.device.node));
+    break;
 
-    default:
-        Serial.printf("unknown command %i\n", task.command);
-        break;
-    }
+  default:
+    Serial.printf("unknown command %i\n", task.command);
+    break;
+  }
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RF hook
 void onRFrxCallback(Packet pkt){
   Serial.println("::RFrxCallback");
+  pkt.toString();
 };
