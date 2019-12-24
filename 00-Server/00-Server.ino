@@ -21,7 +21,8 @@ void setup(){
   webServer.setup();
   //rfLink.setup();
   Serial.println("-- setup complete ---------------");
-  devices->lights[2].turnOn();
+
+  devices->fans[0].turnOn();
   Serial.println(devices->toJson());
 };
 

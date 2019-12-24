@@ -34,8 +34,6 @@ Light* Devices::getLight(int _id){
 };
 
 
-
-
 ///////////////////////////////////////////////
 // json 
 String Devices::toJson(){
@@ -43,11 +41,14 @@ String Devices::toJson(){
   String json ="[";
 
   //lights
-  while (i<lightsLen){
-    json += this->lights[i].toJson();
-    i++;
-    json += i==lightsLen?"":",";
+  for (int i = 0; i < lightsLen; i++){
+    json += this->lights[i].toJson() + ", ";
   };
+
+  //fan
+  for (int i = 0; i < fansLen; i++){
+    json += this->fans[i].toJson() + ", ";
+  }
 
   json += "]";
   return json;

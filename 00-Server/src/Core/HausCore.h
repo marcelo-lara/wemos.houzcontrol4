@@ -5,7 +5,8 @@
 #include "Devices.h"
 #include "Channels.h"
 
+//devices
 #include "Devices/Light.h"
-
+#include "Devices/Fan.h"
 
 

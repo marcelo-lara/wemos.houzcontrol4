@@ -39,6 +39,9 @@ public:
     this->id=_id;
     this->type=_type;
   };
+  Device(int _id, DeviceType _type, Zone zone):Device(_id, _type){
+    this->zone=zone;
+  };
   DeviceType type;    //device type
   u8         id;      //channel
   u32        payload; //value

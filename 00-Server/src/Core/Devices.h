@@ -2,13 +2,21 @@
 #include "Arduino.h"
 #include "Model.h"
 #include "Channels.h"
+
 #include "Devices/Light.h"
+#include "Devices/Fan.h"
+
+
+
 // device storage
 class Devices{
 private:
     static Devices* instance;
     void   lightsSetup();
     Devices();
+    
+    //TODO: cache json output
+    String _jsonCache = "";
 
 public:
   static Devices* getInstance();
@@ -16,6 +24,13 @@ public:
   int listLen; //total channels
   Device* get(u8 deviceId);
   void set(u8 deviceId, u32 payload);
+
+  //fans universe
+  Fan fans[1]{
+    Fan(suite_fan, zone_suite, node_suite)
+  };
+  int fansLen = 1;
+  Fan* getFan(int _id);
 
   //lights universe
   Light lights[15]{
@@ -40,10 +55,9 @@ public:
 
   //ac universe
   //environment universe
-  //fan universe
 
   ///////////////////////////////////////////////////////////////
-  Device list[15]{
+  Device list[16]{
     lights[ 0],
     lights[ 1],
     lights[ 2],
@@ -58,18 +72,10 @@ public:
     lights[11],
     lights[12],
     lights[13],
-    lights[14]
+    lights[14],
+    fans[0]
   };
-  String toJson();
 
-  // static String printDevice(Device device){
-  //   String str = "[id:";
-  //   str += device.id;
-  //   str += "|t";
-  //   str += device.type;
-  //   str += "|p";
-  //   str += device.payload;
-  //   str += "]";
-  //   return str;
-  // };
+  //TODO: cache output
+  String toJson();
 };
