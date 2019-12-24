@@ -17,11 +17,11 @@ WebServer webServer;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void setup(){
-  //wemosWiFi.connect("hauskontrol");
-  //webServer.setup();
+  wemosWiFi.connect("hauskontrol");
+  webServer.setup();
   //rfLink.setup();
   Serial.println("-- setup complete ---------------");
-
+  devices->lights[2].turnOn();
   Serial.println(devices->toJson());
 };
 
@@ -40,11 +40,11 @@ void runTask(){
         break;
 
     case command_rf_send: 
-        Serial.println("TASK| command_rf_send");
+        Serial.println("command_rf_send");
         break;
 
     case command_play_scene: 
-        Serial.println("TASK| command_play_scene");
+        Serial.println("command_play_scene");
         break;
     
     default:

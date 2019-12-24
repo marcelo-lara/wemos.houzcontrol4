@@ -40,7 +40,7 @@ Light* Devices::getLight(int _id){
 // json 
 String Devices::toJson(){
   int i = 0;
-  String json ="{\"list\":[";
+  String json ="[";
 
   //lights
   while (i<lightsLen){
@@ -49,7 +49,7 @@ String Devices::toJson(){
     json += i==lightsLen?"":",";
   };
 
-  json += "]}";
+  json += "]";
   return json;
 };
 

@@ -152,21 +152,10 @@ void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // response with all nodes and devices 
 void WebServer::api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
-  Devices *dev = dev->getInstance();
-  
   Serial.println("::api_serverStatus");
   String jsonStr;
   jsonStr = "{";
-  jsonStr += "\"devs\": [";
-  for (int i = 0; i < dev->listLen; i++)
-  {
-    jsonStr += "{\"id\": ";
-    jsonStr += dev->list[i].id;
-    jsonStr += ", \"val\": ";
-    jsonStr += dev->list[i].payload;
-    jsonStr += "]";
-    if(i != dev->listLen) jsonStr += ", ";
-  }
-  jsonStr += "]}";
+  jsonStr += "\"devs\": " + Devices::getInstance()->toJson();
+  jsonStr += "}";
   request->send(200, "application/json", jsonStr);
 };
