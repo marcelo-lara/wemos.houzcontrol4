@@ -38,6 +38,10 @@ public:
   int    lightsLen = 0;
   Light* getLight(int _id);
 
+  //ac universe
+  //environment universe
+  //fan universe
+
   Device list[15]{
     lights[ 0],
     lights[ 1],
