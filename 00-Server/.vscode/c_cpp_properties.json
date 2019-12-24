@@ -7,10 +7,11 @@
                 "C:\\Users\\darkangel\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.5.2\\**",
                 "C:\\Dropbox\\11-Electronics\\02-Libraries\\**",
                 "C:\\Dropbox\\11-Electronics\\02-Libraries\\rflink\\**",
-                "C:\\Users\\darkangel\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.1\\**"
+                "C:\\Users\\darkangel\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.1\\**",
+                "C:\\Users\\darkangel\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.3\\**"
             ],
             "forcedInclude": [
-              "C:\\Dropbox\\11-Electronics\\02-Libraries\\rflink\\**"
+                "C:\\Dropbox\\11-Electronics\\02-Libraries\\rflink\\**"
             ],
             "intelliSenseMode": "gcc-x86",
             "compilerPath": "C:\\MinGW\\bin\\gcc.exe",

@@ -138,11 +138,11 @@ void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len
   //set device
   Device dev;
   dev.id = doc["channel"];
-  dev.node = doc["node"];
+ // dev.node = doc["node"];
   dev.payload = doc["payload"];
 
   if (!(dev.id == 0 && dev.payload == 0)){
-    TaskManager::getInstance()->addTask(command_rf_send, dev);    
+//    TaskManager::getInstance()->addTask(command_rf_send, dev);    
     request->send(200, "application/json", "{\"status\":\"packet enqueed\"}");
   }else{
     request->send(200, "application/json", "{\"status\":\"error on data\"}");
@@ -158,14 +158,14 @@ void WebServer::api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, 
   String jsonStr;
   jsonStr = "{";
   jsonStr += "\"devs\": [";
-  for (int i = 0; i < dev->deviceListLen; i++)
+  for (int i = 0; i < dev->listLen; i++)
   {
     jsonStr += "{\"id\": ";
-    jsonStr += dev->deviceList[i].id;
+    jsonStr += dev->list[i].id;
     jsonStr += ", \"val\": ";
-    jsonStr += dev->deviceList[i].payload;
+    jsonStr += dev->list[i].payload;
     jsonStr += "]";
-    if(i != dev->deviceListLen) jsonStr += ", ";
+    if(i != dev->listLen) jsonStr += ", ";
   }
   jsonStr += "]}";
   request->send(200, "application/json", jsonStr);

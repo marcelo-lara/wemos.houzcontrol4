@@ -4,7 +4,7 @@
 // HouzControl4 modules
 #include "src/Core/HausCore.h"
 Devices *devices = devices->getInstance();
-SceneManager sceneManager;
+//SceneManager sceneManager;
 
 //RF link
 #include <RFlink.h>
@@ -17,11 +17,14 @@ WebServer webServer;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void setup(){
-    wemosWiFi.connect("hauskontrol");
-    webServer.setup();
-    rfLink.setup();
-    devices->set(server_rf, rfLink.ready);
+    //wemosWiFi.connect("hauskontrol");
+    //webServer.setup();
+    //rfLink.setup();
     Serial.println("-- setup complete ---------------");
+  Serial.println("--");
+  Serial.print("suite_light: ");
+  Serial.print(devices->getLight(suite_light)->id,HEX);
+
 };
 
 void loop(){
@@ -45,14 +48,14 @@ void runTask(){
         {Packet pkt;
         pkt.id=task.device.id;
         pkt.cmd=RFCMD_QUERY;
-        pkt.node=task.device.node;
+        //pkt.node=task.device.node;
         pkt.payload=task.device.payload;
         rfLink.send(pkt);}
         break;
 
     case command_play_scene: 
         Serial.println("command_play_scene");
-        sceneManager.play(task.device.payload);
+        //sceneManager.play(task.device.payload);
         break;
     
     default:
@@ -65,6 +68,3 @@ void runTask(){
 void onRFrxCallback(Packet pkt){
   devices->set(pkt.id, pkt.payload);
 };
-
-
-

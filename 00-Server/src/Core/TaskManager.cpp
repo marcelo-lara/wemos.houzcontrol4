@@ -8,7 +8,7 @@ void TaskManager::addTask(Command _command, int _deviceId, long _payload){
     Device dev;
     dev.id=_deviceId;
     dev.payload=_payload;
-    addTask((Command)_command, dev);
+    this->addTask((Command)_command, dev);
 };
 
 //Add a task to queue
