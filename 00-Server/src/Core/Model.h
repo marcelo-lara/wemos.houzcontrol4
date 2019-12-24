@@ -35,6 +35,7 @@ enum NodeEnm{
 class Device {
 public:
   Device(){};
+  Device(int _id){this->id=_id;};
   Device(int _id, DeviceType _type){
     this->id=_id;
     this->type=_type;
@@ -54,8 +55,12 @@ public:
   NodeEnm    node = node_server; //external node
 
   // base 
-  virtual void update(){};
-  virtual void update(long _payload){};
+  virtual void update(){
+    Serial.println("device::update()");
+  };
+  virtual void update(long _payload){
+    Serial.println(this->type);
+  };
 
 };
 

@@ -22,7 +22,7 @@ void setup(){
   rfLink.setup();
   Serial.println("-- setup complete ---------------");
 
-  devices->lights[0].update();
+  devices->lights[1].update();
   Serial.println(devices->toJson());
 };
 
@@ -63,5 +63,8 @@ void runTask(){
 // RF hook
 void onRFrxCallback(Packet pkt){
   Serial.println("::RFrxCallback");
+  Device* dev = devices->get(pkt.id);
+  if(dev->id<1) return;
+  dev->update(pkt.payload);
   pkt.toString();
 };
