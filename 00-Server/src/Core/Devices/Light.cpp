@@ -34,16 +34,19 @@ Light::Light(int id, Zone zone, NodeEnm _node):Light(id){
 
 //light as jsonString
 String Light::toJson(){
-  String json = "{\"id\":";
+  String json = "{";
+  json += "\"id\":";
   json += this->id;
   json += ", \"type\":";
   json += this->type;
+  json += ", \"on\":";
+  json += this->on?1:0;
+  json += ", \"val\":";
+  json += this->on?1:0;
   if(this->zone>0){
     json += ", \"zone\":";
     json += this->zone;
   };
-  json += ", \"val\":";
-  json += this->on?1:0;
 
   json += "}";
   return json;
