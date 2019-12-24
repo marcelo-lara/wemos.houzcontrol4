@@ -17,47 +17,32 @@ WebServer webServer;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void setup(){
-    //wemosWiFi.connect("hauskontrol");
-    //webServer.setup();
-    //rfLink.setup();
-    Serial.println("-- setup complete ---------------");
-  Serial.println("--");
-  Serial.println("suite_light: ");
-  
-  Light *light = devices->getLight(suite_light);
-  light->turnOn();
-  Serial.println(light->toJson());
+  wemosWiFi.connect("hauskontrol");
+  webServer.setup();
+  rfLink.setup();
+  Serial.println("-- setup complete ---------------");
 };
 
 void loop(){
-    wemosWiFi.update();
-    rfLink.update();
-    if(TaskManager::getInstance()->arePendingTasks()) runTask(); 
+  wemosWiFi.update();
+  rfLink.update();
+  if(TaskManager::getInstance()->arePendingTasks()) runTask(); 
 };
 
 void runTask(){
     Task task = TaskManager::getInstance()->getNextTask();
-    Serial.print("task> ");
+    Serial.print("TASK| ");
     switch (task.command){
     case command_set_device: 
-        Serial.println("TASK| command_set_device");
-        Serial.print("\tdevice: ");
-        Serial.println(task.device.id, HEX);
+        Serial.println("command_set_device");
         break;
 
     case command_rf_send: 
-        Serial.println("command_rf_send");
-        // {Packet pkt;
-        // pkt.id=task.device.id;
-        // pkt.cmd=RFCMD_QUERY;
-        // //pkt.node=task.device.node;
-        // pkt.payload=task.device.payload;
-        // rfLink.send(pkt);}
+        Serial.println("TASK| command_rf_send");
         break;
 
     case command_play_scene: 
-        Serial.println("command_play_scene");
-        //sceneManager.play(task.device.payload);
+        Serial.println("TASK| command_play_scene");
         break;
     
     default:
@@ -68,5 +53,5 @@ void runTask(){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RF hook
 void onRFrxCallback(Packet pkt){
-  devices->set(pkt.id, pkt.payload);
+  Serial.println("::RFrxCallback");
 };
