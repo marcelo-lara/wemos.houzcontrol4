@@ -8,5 +8,6 @@
 //devices
 #include "Devices/Light.h"
 #include "Devices/Fan.h"
+#include "Devices/Environment.h"
 
 

@@ -22,7 +22,7 @@ void setup(){
   //rfLink.setup();
   Serial.println("-- setup complete ---------------");
 
-  devices->fans[0].turnOn();
+  devices->environments[0].update();
   Serial.println(devices->toJson());
 };
 

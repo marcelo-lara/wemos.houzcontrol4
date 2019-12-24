@@ -41,14 +41,16 @@ String Devices::toJson(){
   String json ="[";
 
   //lights
-  for (int i = 0; i < lightsLen; i++){
+  for (int i = 0; i < lightsLen; i++)
     json += this->lights[i].toJson() + ", ";
-  };
 
   //fan
-  for (int i = 0; i < fansLen; i++){
+  for (int i = 0; i < fansLen; i++)
     json += this->fans[i].toJson() + ", ";
-  }
+
+  //environments
+  for (int i = 0; i < environmentsLen; i++)
+    json += this->environments[i].toJson() + ", ";
 
   json += "]";
   return json;
