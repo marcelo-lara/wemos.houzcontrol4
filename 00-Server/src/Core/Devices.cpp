@@ -33,7 +33,29 @@ Light* Devices::getLight(int _id){
   return &l;
 };
 
-// instance ///////////////////////////////////
+
+
+
+///////////////////////////////////////////////
+// json 
+String Devices::toJson(){
+  int i = 0;
+  String json ="{\"list\":[";
+
+  //lights
+  while (i<lightsLen){
+    json += this->lights[i].toJson();
+    i++;
+    json += i==lightsLen?"":",";
+  };
+
+  json += "]}";
+  return json;
+};
+
+
+///////////////////////////////////////////////
+// instance 
 Devices::Devices(){
   this->lightsSetup();
   this->listLen=(sizeof(list)/sizeof(*list));

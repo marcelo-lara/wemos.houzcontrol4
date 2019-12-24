@@ -10,6 +10,7 @@ public:
   Light(int id, NodeEnm _node, u8 _muxCh, u8 _muxPos);
   Light(int id, u8 _gpio);
   Light(int id, NodeEnm _node);
+  Light(int id, Zone zone, NodeEnm _node);
   TaskManager *taskManager = TaskManager::getInstance();
   String toJson();
 
