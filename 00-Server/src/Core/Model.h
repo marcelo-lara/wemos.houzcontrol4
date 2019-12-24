@@ -42,97 +42,36 @@ public:
   Device(int _id, DeviceType _type, Zone zone):Device(_id, _type){
     this->zone=zone;
   };
-  DeviceType type;    //device type
-  u8         id;      //channel
-  u32        payload; //value
-  Zone       zone;    //device location
+  Device(int _id, DeviceType _type, Zone zone, NodeEnm node):Device(_id, _type, zone){
+    this->node=node;
+  };
+
+  // common properties
+  DeviceType type;      //device type
+  u8         id;        //channel
+  u32        payload=0; //value
+  Zone       zone;      //device location
+  NodeEnm    node = node_server; //external node
+
+  // base 
+  virtual void update(){};
+  virtual void update(long _payload){};
+
 };
-
-class DeviceData : Device{
-  u8      id;
-  u8      node; //phisical node
-  Zone    zone; //associated room
-  String  name; //device name
-};
-
-// class Environment: Device {
-// public:
-//   Environment(int _chTemp = 0, int _chHum = 0, int _chPress = 0, int _chLight = 0);
-//   void update();
-
-//   bool  on;     //sensor is on
-//   float temp;   //temperature
-//   float hum;    //humidity
-//   float press;  //pressure
-//   float light;  //light level
-
-// private:
-//   u8    chTemp; //temperature channel
-//   u8    chHum;  //humidity
-//   u8    chPress;//pressure
-//   u8    chLight;//light level
-//   long  ts;     //sampled data timestamp
-// };
-
-// class Light: public Device {
-// public:
-//   Light(){};
-//   Light(u8 _muxCh, u8 _muxPos);
-//   Light(u8 _gpio);
-//   Light(NodeEnm _node);
-
-//   void turnOn();
-//   void turnOff();
-//   void set(bool _on);
-
-//   operator Device(){return Device(1, devtype_light);};
-
-// protected:
-//   bool on;    //light status
-//   bool isMux;   //light is behind a multpiplexer
-
-// private:
-//   u8   muxCh;    //channel of multpiplexer
-//   u8   muxPos;   //bit behind multpiplexer
-// };
-
-// class Fan: Device {
-// protected:
-//   bool on;      //fan is on, if fan is off speed is 0
-//   u8   speed;   //when on, fan speed
-// public:
-//   void setSpeed(int _speed);
-//   void turnOn();
-//   void turnOff();
-//   void set(bool _on);
-// };
-
-// enum AcMode{
-//   acmode_cool,
-//   acmode_heat
-// };
-
-// class Ac: Device {
-// protected:
-//   bool on;      //ac is on
-//   bool fan;     //fan is on
-//   bool swing;   //swing is on
-//   AcMode mode;  //ac mode (cool/heat)
-//   int   temp;    //ac temperature
-// };
 
 ///////////////////////////////////////////////////////////////////////////
 // TASKS
 
 // Task Command
 enum Command{
-  command_set_device  =  1,
-  command_play_scene  =  2,
-  command_set_scene   =  3,
-  command_rf_send     =  4, 
-  command_ir_send     =  5,
-  command_scene_pause =  9,
-  command_set_on      = 10
+  command_set_device ,
+  command_play_scene ,
+  command_set_scene  ,
+  command_rf_send    , 
+  command_ir_send    ,
+  command_rf_query   ,
+  command_scene_pause,
+  command_set_on     
 };
 
 // Task

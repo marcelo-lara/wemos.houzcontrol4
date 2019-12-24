@@ -7,7 +7,6 @@
 class Fan : public Device {
 public:  
   Fan(int id, Zone zone, NodeEnm node);
-  NodeEnm node = node_server; //target node
   String toJson();
 
   void turnOn();
@@ -16,6 +15,9 @@ public:
 
   bool on      = 0; 
   int  speed   = 0; 
+
+  void update();
+  void update(long _payload);
 
 private:
   //default on speed

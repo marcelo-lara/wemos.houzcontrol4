@@ -19,14 +19,10 @@ Light::Light(int id, u8 _gpio):Light(id){
 };
 
 // remote light
-Light::Light(int id, NodeEnm _node): Light(id, zone_undefined, _node){
-};
-Light::Light(int id, NodeEnm _node, u8 _muxCh, u8 _muxPos):Light(id, _muxCh, _muxPos){
-  this->node=_node;
-};
-Light::Light(int id, Zone zone, NodeEnm _node):Light(id){
-  this->zone=zone;
-  this->node=_node;
+Light::Light(int id, Zone zone, NodeEnm _node):Device(id,devtype_light,zone,_node){};
+Light::Light(int id, Zone zone, NodeEnm _node, u8 _muxCh, u8 _muxPos):Light(id, zone, _node){
+  this->muxCh=_muxCh;
+  this->muxPos=_muxPos;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -64,5 +60,16 @@ void Light::set(bool _on){
   if(this->node>0){
     Serial.println("sendCommandToNode()");
     taskManager->addTask(command_rf_send, this->id, this->on?1:0);
+  };
+};
+
+void Light::update(){
+  if(!this->isLocal){
+    taskManager->addTask(command_rf_query, this->id, 0);
+  }
+};
+void Light::update(long _payload){
+  if(!this->isLocal){
+    this->on=!_payload==0;
   };
 };

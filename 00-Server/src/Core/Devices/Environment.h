@@ -7,8 +7,6 @@
 class Environment : public Device {
 public:  
   Environment(int id, Zone zone, NodeEnm node, int chTemp, int chHum, int chPress, int chLight);
-  NodeEnm node = node_server; //target node
-  void  update();
   String toJson();
 
   bool  on=0;     //sensor is on
@@ -16,6 +14,9 @@ public:
   float hum=0;    //humidity
   float press=0;  //pressure
   float light=0;  //light level
+
+  void update();
+  void update(long _payload);
 
 private:
   u8    chTemp=0; //temperature channel

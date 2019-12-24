@@ -47,8 +47,13 @@ void runTask(){
     case command_play_scene: 
         Serial.println("command_play_scene");
         break;
-    
+
+    case command_rf_query: 
+        Serial.println("command_rf_query");
+        break;
+
     default:
+        Serial.printf("unknown command %i\n", task.command);
         break;
     }
 };

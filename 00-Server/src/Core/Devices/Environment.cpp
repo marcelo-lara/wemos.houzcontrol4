@@ -38,6 +38,12 @@ String Environment::toJson(){
   json += "}";
   return json;
 };
+
+//update environment values request
 void Environment::update(){
+  Serial.println("Environment::update()");
+};
+
+void Environment::update(long _payload){
   Serial.println("Environment::update()");
 };
