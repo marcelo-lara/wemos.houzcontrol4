@@ -26,8 +26,8 @@ public:
   void update();
   void update(long _payload);
 
-private:
   u8   muxCh  = 0;      //channel of multpiplexer
+private:
   u8   muxPos = 0;      //bit behind multpiplexer
   u8   gpio   = 0;      //single channel IO
 };

@@ -22,15 +22,10 @@ void setup(){
   rfLink.setup();
   Serial.println("-- setup complete ---------------");
 
-  Device *d = devices->list[1];
-  d->update(110);
+  Light* d = static_cast<Light*>(devices->list[0]); 
+  d->turnOff();
 
-  Device *e = devices->list[16];
-  e->update(100);
 
-  Serial.println("--  ---------------");
-
-  Serial.println(devices->toJson());
 };
 
 void loop(){
@@ -49,6 +44,7 @@ void runTask(){
 
   case command_rf_send: 
     Serial.println("command_rf_send");
+    rfLink.send(Packet(task.device.id, RFCMD_SET, task.device.payload, task.device.node));
     break;
 
   case command_play_scene: 
