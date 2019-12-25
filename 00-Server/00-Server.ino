@@ -22,7 +22,14 @@ void setup(){
   rfLink.setup();
   Serial.println("-- setup complete ---------------");
 
-  devices->lights[1].update();
+  Device *d = devices->list[1];
+  d->update(110);
+
+  Device *e = devices->list[16];
+  e->update(100);
+
+  Serial.println("--  ---------------");
+
   Serial.println(devices->toJson());
 };
 

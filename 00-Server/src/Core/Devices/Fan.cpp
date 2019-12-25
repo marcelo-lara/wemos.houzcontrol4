@@ -47,5 +47,6 @@ void Fan::update(){
     TaskManager::getInstance()->addTask(command_rf_query, this->id, 0);
 };
 void Fan::update(long _payload){
+  Serial.printf("[%i]Fan::update(payload:%l)\n", this->id, _payload);
     this->on=!_payload==0;
 };

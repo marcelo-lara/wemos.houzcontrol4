@@ -69,6 +69,7 @@ void Light::update(){
   }
 };
 void Light::update(long _payload){
+  Serial.printf("[%i]Light::update(payload:%l)\n", this->id, _payload);
   if(!this->isLocal){
     this->on=!_payload==0;
   };

@@ -45,5 +45,5 @@ void Environment::update(){
 };
 
 void Environment::update(long _payload){
-  Serial.println("Environment::update()");
+  Serial.printf("[%i]Environment::update(payload:%l)\n", this->id, _payload);
 };

@@ -55,11 +55,25 @@ public:
   NodeEnm    node = node_server; //external node
 
   // base 
+  virtual String toJson(){
+    Serial.println("not implemented!!!!");
+  };
   virtual void update(){
     Serial.println("device::update()");
   };
   virtual void update(long _payload){
-    Serial.println(this->type);
+    switch (this->type)
+    {
+    case devtype_light:
+      Serial.print("<devtype_light>");
+      break;
+    
+    default:
+      Serial.print("unknown deviceType ");
+      Serial.println(this->type);
+      break;
+    }
+    
   };
 
 };
