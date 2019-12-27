@@ -6,6 +6,7 @@
 
 //Device Type
 enum DeviceType {
+  devtype_undefined = 0, //not defined device (error!)
   devtype_light = 1, //light (use initializer to multiplex)
   devtype_env   = 2, //Environment
   devtype_fan   = 3, //fan 
@@ -35,7 +36,7 @@ enum NodeEnm{
 class Device {
 public:
   Device(){};
-  Device(int _id){this->id=_id;};
+  Device(int id){this->id=id;};
   Device(int _id, DeviceType _type){
     this->id=_id;
     this->type=_type;
@@ -48,11 +49,11 @@ public:
   };
 
   // common properties
-  DeviceType type;      //device type
-  u8         id;        //channel
-  u32        payload=0; //value
-  Zone       zone;      //device location
-  NodeEnm    node = node_server; //external node
+  DeviceType type =devtype_undefined; //device type
+  u8         id =0;                //channel
+  u32        payload=0;            //device raw value
+  Zone       zone=zone_undefined;  //device location
+  NodeEnm    node = node_server;   //external node
 
   // base 
   virtual String toJson(){

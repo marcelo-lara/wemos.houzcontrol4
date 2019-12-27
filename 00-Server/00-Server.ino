@@ -11,8 +11,12 @@ Devices *devices = devices->getInstance();
 void onRFrxCallback(Packet devicePacket);
 RFlink rfLink(onRFrxCallback);
 
+//Node manager
+#include "src/Server/RfNodes.h"
+RfNodes rfNodes(&rfLink);
+
 //API server
-#include "WebServer.h"
+#include "src/Server/WebServer.h"
 WebServer webServer;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,10 +24,11 @@ void setup(){
   wemosWiFi.connect("hauskontrol");
   webServer.setup();
   rfLink.setup();
+  rfNodes.setup();
   Serial.println("-- setup complete ---------------");
 
-  Light* d = static_cast<Light*>(devices->list[0]); 
-  d->turnOff();
+  // Light* d = static_cast<Light*>(devices->list[0]); 
+  // d->turnOff();
 
 
 };
@@ -31,6 +36,7 @@ void setup(){
 void loop(){
   wemosWiFi.update();
   rfLink.update();
+  rfNodes.update();
   if(TaskManager::getInstance()->arePendingTasks()) runTask(); 
 };
 
@@ -67,7 +73,13 @@ void runTask(){
 void onRFrxCallback(Packet pkt){
   Serial.println("::RFrxCallback");
   Device* dev = devices->get(pkt.id);
-  if(dev->id<1) return;
-  dev->update(pkt.payload);
+  
+  if(!dev) //delegate parse
+    return rfNodes.parsePacket(pkt);
+  
+  Serial.println("->updateDevice");
+  Serial.println(dev->id);
+  
+  //dev->update(pkt.payload);
   pkt.toString();
 };

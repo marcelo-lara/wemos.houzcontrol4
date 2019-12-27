@@ -1,6 +1,6 @@
 #pragma once
 #include "Arduino.h"
-#include "src/Core/HausCore.h"
+#include "../Core/HausCore.h"
 #include "AsyncJson.h"
 #include "ArduinoJson.h"
 #include <ESPAsyncWebServer.h>

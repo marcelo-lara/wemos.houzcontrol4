@@ -49,7 +49,7 @@
 #define living_mainLight	0x33 //N3DC330002\n - 51 center
 #define living_dicroLight	0x34 //N3DC340000\n - 52 2x4 dicro array
 #define living_spotLight	0x35 //N3DC350000\n - 53 spotlights
-#define living_fxLight		0x36 //N3DC360000\n - 54 guidance leds
+#define living_fxLight		0x36 //N3DC360000\n - 54 fx lights
 #define living_fx			    0x37 //N3DC370000\n - 55 fx 'scene' render
 
 #define living_AC		      0x38 //N3DC380001\n
