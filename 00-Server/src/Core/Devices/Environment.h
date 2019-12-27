@@ -17,11 +17,11 @@ public:
 
   void update();
   void update(long _payload);
+  long ts=0;     //sampled data timestamp
 
 private:
   u8    chTemp=0; //temperature channel
   u8    chHum=0;  //humidity
   u8    chPress=0;//pressure
   u8    chLight=0;//light level
-  long  ts=0;     //sampled data timestamp
 };
