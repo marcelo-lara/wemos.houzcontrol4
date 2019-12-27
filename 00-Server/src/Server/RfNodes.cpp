@@ -3,7 +3,7 @@
 void RfNodes::setup(){
 
   //initial query
-  this->currentNode=0;
+  this->currentNode=1;
   this->nextAction=RfNodeAction_requestStatus;
 
 
@@ -17,8 +17,8 @@ void RfNodes::update(){
     Serial.println("::RfNodeAction_requestStatus");
     {
       Packet packet;
-      packet.id = this->nodes[this->currentNode]->node;
-      packet.node = packet.id;
+      packet.id = suite_enviroment;
+      packet.node = node_suite;
       packet.cmd = RFCMD_QUERY;
       packet.payload = 0;
       this->nextAction=RfNodeAction_awaitRequestStatus;
@@ -53,6 +53,42 @@ void RfNodes::parsePacket(Packet packet){
     break;
 
 //uncoded environments
+  case external_temp:
+    Serial.println("external_temp");
+    break;
+  case external_humidity: 
+    Serial.println("external_humidity");
+    break;
+  case external_pressure: 
+    Serial.println("external_pressure");
+    break;
+
+  case suite_temp		:
+    {Device* dev = Devices::getInstance()->get(suite_enviroment);
+    if(!dev) return;
+    Environment* env = static_cast<Environment*>(dev); 
+    env->temp=rfLink->codec->floatDecode(packet.payload);
+    env->on=true;
+    env->ts=millis();}
+    break;
+
+  case suite_humidity:
+    {Device* dev = Devices::getInstance()->get(suite_enviroment);
+    if(!dev) return;
+    Environment* env = static_cast<Environment*>(dev); 
+    env->hum=rfLink->codec->floatDecode(packet.payload);
+    env->on=true;
+    env->ts=millis();}    
+    break;
+
+  case suite_pressure:
+    {Device* dev = Devices::getInstance()->get(suite_enviroment);
+    if(!dev) return;
+    Environment* env = static_cast<Environment*>(dev); 
+    env->press=rfLink->codec->pressureDecode(packet.payload);
+    env->on=true;
+    env->ts=millis();}    
+    break;
 
 //nodes
   default:

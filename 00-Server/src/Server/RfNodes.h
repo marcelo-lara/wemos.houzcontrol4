@@ -2,6 +2,7 @@
 #include "Arduino.h"
 #include "../Core/Model.h"
 #include "../Core/Channels.h"
+#include "../Core/Devices.h"
 #include <RfLink.h>
 
 enum RfNodeStatus{
