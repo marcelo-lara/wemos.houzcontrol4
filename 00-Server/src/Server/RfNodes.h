@@ -28,6 +28,15 @@ enum RfNodeAction{
   RfNodeAction_awaitRequestStatus
 };
 
+class MuxCh{
+  MuxCh(int ch, Device* devs){
+    this->ch=ch;
+    this->devs=devs;
+  };
+  int ch;
+  Device* devs;
+};
+
 class RfNodes{
 public:
   RfNodes(RFlink *rfLink){this->rfLink=rfLink;};
@@ -41,6 +50,8 @@ public:
     new RfNode(node_office),
     new RfNode(node_suite)
   };
+
+  void demux(long payload, int devLen, int* devArray);
 
   int currentNode = 0;
   RfNodeAction nextAction;

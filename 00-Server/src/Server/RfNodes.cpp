@@ -1,6 +1,30 @@
 #include "RfNodes.h"
 
+int living_dicro[] = {
+  living_dicro_1,
+  living_dicro_2,
+  living_dicro_3,
+  living_dicro_4,
+  living_dicro_5,
+  living_dicro_6,
+  living_dicro_7,
+  living_dicro_8
+};
+int living_fxs[] = {
+  living_fx1,
+  living_fx2
+};
+int living_spots[] = {
+  living_booksh,
+  living_corner
+};
+
+
 void RfNodes::setup(){
+
+  //build muxed channels
+
+
 
   //initial query
   this->currentNode=1;
@@ -12,6 +36,7 @@ void RfNodes::setup(){
 };
 
 void RfNodes::update(){
+  return;//RBF
   switch (this->nextAction){
   case RfNodeAction_requestStatus:
     Serial.println("::RfNodeAction_requestStatus");
@@ -37,19 +62,19 @@ void RfNodes::parsePacket(Packet packet){
 
 //muxed lights
   case living_mainLight:
-    Serial.println("living_mainLight");
+    Devices::getInstance()->get(living_main)->update(packet.payload==0?0:1);
     break;
 
   case living_dicroLight: 
-    Serial.println("living_dicroLight");
+    this->demux(packet.payload, 8, living_dicro);
     break;
 
   case living_spotLight: 
-    Serial.println("living_spotLight");
+    this->demux(packet.payload, 2, living_spots);
     break;
   
   case living_fxLight: 
-    Serial.println("living_fxLight");
+    this->demux(packet.payload, 2, living_fxs);
     break;
 
 //uncoded environments
@@ -66,28 +91,19 @@ void RfNodes::parsePacket(Packet packet){
   case suite_temp		:
     {Device* dev = Devices::getInstance()->get(suite_enviroment);
     if(!dev) return;
-    Environment* env = static_cast<Environment*>(dev); 
-    env->temp=rfLink->codec->floatDecode(packet.payload);
-    env->on=true;
-    env->ts=millis();}
+    static_cast<Environment*>(dev)->update(envenm_temp, rfLink->codec->floatDecode(packet.payload));}    
     break;
 
   case suite_humidity:
     {Device* dev = Devices::getInstance()->get(suite_enviroment);
     if(!dev) return;
-    Environment* env = static_cast<Environment*>(dev); 
-    env->hum=rfLink->codec->floatDecode(packet.payload);
-    env->on=true;
-    env->ts=millis();}    
+    static_cast<Environment*>(dev)->update(envenm_hum, rfLink->codec->floatDecode(packet.payload));}    
     break;
 
   case suite_pressure:
     {Device* dev = Devices::getInstance()->get(suite_enviroment);
     if(!dev) return;
-    Environment* env = static_cast<Environment*>(dev); 
-    env->press=rfLink->codec->pressureDecode(packet.payload);
-    env->on=true;
-    env->ts=millis();}    
+    static_cast<Environment*>(dev)->update(envenm_press, rfLink->codec->pressureDecode(packet.payload));}    
     break;
 
 //nodes
@@ -96,5 +112,26 @@ void RfNodes::parsePacket(Packet packet){
     break;
   };
 
+
+};
+
+
+void RfNodes::demux(long payload, int devLen, int* devArray){
+  int pos=0;
+
+  //fill values
+  while (payload){
+    Devices::getInstance()->get(devArray[pos])->update((payload&1)?1:0);
+    payload>>=1;
+    pos++;
+    if(pos>devLen) return;
+  };
+
+  //fill empty values
+  if(pos<devLen){
+    for (int i = pos; i < devLen; i++){
+      Devices::getInstance()->get(devArray[i])->update(0);
+    };
+  }
 
 };

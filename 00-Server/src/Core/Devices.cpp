@@ -7,8 +7,7 @@ Device* Devices::get(u8 deviceId){
       return list[i];
     i++;
   }
-  Serial.printf("WARN: device %i not found!!", deviceId);
-  Device d = Device();
+  Serial.printf("WARN: device %i not found!!\n", deviceId);
   return NULL;
 };
 
@@ -17,6 +16,22 @@ void Devices::set(u8 deviceId, u32 payload){
   if(dev->id!=0) 
     dev->payload = payload;
 };
+
+//get devices by multiplexed channel
+Device* Devices::getByMux(int muxCh){
+
+  //count matching elements
+  int q = 0;
+  for (int i = 0; i < listLen; i++){
+    if(list[i]->type==devtype_light){
+
+    };
+  };
+  return NULL;
+
+
+};
+
 
 ///////////////////////////////////////////////
 // json 

@@ -27,6 +27,11 @@ void setup(){
   rfNodes.setup();
   Serial.println("-- setup complete ---------------");
 
+  Packet pkt;
+  pkt.id=living_dicroLight;
+  pkt.payload=0;
+  rfNodes.parsePacket(pkt);
+  
   // Light* d = static_cast<Light*>(devices->list[0]); 
   // d->turnOff();
 
