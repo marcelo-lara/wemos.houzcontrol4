@@ -47,3 +47,14 @@ void Environment::update(){
 void Environment::update(long _payload){
   Serial.printf("[%i]Environment::update(payload:%l)\n", this->id, _payload);
 };
+
+void Environment::update(EnvironmentParam param, float val){
+  switch (param){
+  case envenm_temp:  this->temp=val;  break;
+  case envenm_hum:   this->hum=val;   break;
+  case envenm_press: this->press=val; break;
+  case envenm_light: this->light=val; break;
+  default: return; break;}  
+  this->on=true;
+  this->ts=millis();
+};

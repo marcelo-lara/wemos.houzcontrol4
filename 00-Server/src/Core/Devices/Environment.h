@@ -3,6 +3,12 @@
 #include "../Model.h"
 #include "../TaskManager.h"
 
+enum EnvironmentParam{
+  envenm_temp,
+  envenm_hum,
+  envenm_press,
+  envenm_light
+};
 
 class Environment : public Device {
 public:  
@@ -17,6 +23,7 @@ public:
 
   void update();
   void update(long _payload);
+  void update(EnvironmentParam param, float val);
   long ts=0;     //sampled data timestamp
 
 private:
