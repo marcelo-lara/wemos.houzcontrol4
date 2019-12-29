@@ -17,10 +17,10 @@ enum DeviceType {
 //Zone where device is located
 enum Zone {
   zone_undefined=0,
-  zone_living  = 1, 
-  zone_suite   = 2,   
-  zone_office  = 3,  
-  zone_kitchen = 4, 
+  zone_living  = 1,
+  zone_suite   = 2,
+  zone_office  = 3,
+  zone_kitchen = 4,
   zone_door    = 5,
   zone_outside = 6
 };
