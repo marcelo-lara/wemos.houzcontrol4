@@ -36,10 +36,9 @@ Device* Devices::getByMux(int muxCh){
 ///////////////////////////////////////////////
 // json 
 String Devices::toJson(){
-  int i = 0;
   String json ="[";
   for (int i = 0; i < listLen; i++)
-    json += list[i]->toJson() + ", ";
+    json += list[i]->toJson() + ((i+1)==listLen?"":",");
   json += "]";
   return json;
 };
