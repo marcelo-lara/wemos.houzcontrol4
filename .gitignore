@@ -6,3 +6,5 @@
 !.vscode/c_cpp_properties.json
  
 **/desktop.ini
+_web/.vscode/arduino.json
+_web/.vscode/c_cpp_properties.json
