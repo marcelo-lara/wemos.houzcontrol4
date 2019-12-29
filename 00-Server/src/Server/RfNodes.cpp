@@ -1,80 +1,115 @@
 #include "RfNodes.h"
-
-int living_dicro[] = {
-  living_dicro_1,
-  living_dicro_2,
-  living_dicro_3,
-  living_dicro_4,
-  living_dicro_5,
-  living_dicro_6,
-  living_dicro_7,
-  living_dicro_8
-};
-int living_fxs[] = {
-  living_fx1,
-  living_fx2
-};
-int living_spots[] = {
-  living_booksh,
-  living_corner
+RfNodes::RfNodes(RFlink *rfLink){
+  this->rfLink=rfLink;
 };
 
+/////////////////////////////////////////////////////
 
+int currentNode = 0;
 void RfNodes::setup(){
 
-  //build muxed channels
+//office updater
+  nodes[0]->raise_updater=[](){
+    TaskManager::getInstance()->addTask(command_rf_query, office_light,      0, node_office);
+    TaskManager::getInstance()->addTask(command_rf_query, external_temp,     0, node_office);
+    TaskManager::getInstance()->addTask(command_rf_query, external_humidity, 0, node_office);
+    TaskManager::getInstance()->addTask(command_rf_query, external_pressure, 0, node_office);
+  };
 
+//suite updater
+  nodes[1]->raise_updater=[](){
+    TaskManager::getInstance()->addTask(command_rf_query, node_suite, 0, node_suite);
+  };
 
-
-  //initial query
-  this->currentNode=1;
-  this->nextAction=RfNodeAction_requestStatus;
-
-
-
-
+//living updater
+  nodes[2]->raise_updater=[](){
+    TaskManager::getInstance()->addTask(command_rf_query, node_living, 0, node_living);
+  };
 };
 
 void RfNodes::update(){
-  return;//RBF
-  switch (this->nextAction){
-  case RfNodeAction_requestStatus:
-    Serial.println("::RfNodeAction_requestStatus");
-    {
-      Packet packet;
-      packet.id = suite_enviroment;
-      packet.node = node_suite;
-      packet.cmd = RFCMD_QUERY;
-      packet.payload = 0;
-      this->nextAction=RfNodeAction_awaitRequestStatus;
-      this->rfLink->send(packet);
-    }
+switch (this->rfStatus){
+  case RfNodesLinkStatus_paused: 
+    return;
     break;
   
+  case RfNodesLinkStatus_idle:
+
+    //engage next node
+    nodesCurrent++;
+    if(nodesCurrent>=nodesCount) nodesCurrent=0;
+
+    //await node response?
+    this->rfStatus = nodes[nodesCurrent]->onUpdate()?RfNodesLinkStatus_awaiting:RfNodesLinkStatus_idle;
+    break;
+
+  case RfNodesLinkStatus_awaiting:
+    if(!nodes[nodesCurrent]->isTimeout()) return; //request time is still valid
+    Serial.println("-RfNodesLinkStatus_awaiting:");
+
+    rfStatus = RfNodesLinkStatus_idle;
+    nodes[nodesCurrent]->onTimeout();
+    break;
+
   default:
     break;
   }
 };
 
-//handle legacy rf channels
+void RfNodes::ackNode(int _node){
+   if(this->rfStatus==RfNodesLinkStatus_awaiting && nodes[nodesCurrent]->node==_node){
+    this->rfStatus==RfNodesLinkStatus_idle;
+    nodes[nodesCurrent]->onAck();
+   }else{
+     for (int i = 0; i < nodesCount; i++){
+       if(nodes[i]->node==_node) nodes[i]->onAck();
+     }
+   }
+};
+
+
+//handle received rf packet
 void RfNodes::parsePacket(Packet packet){
+
+  //update timers
+  ackNode(packet.node);
+
+  //handle legacy rf channels
   switch (packet.id){
 
-//muxed lights
+  //muxed lights
   case living_mainLight:
     Devices::getInstance()->get(living_main)->update(packet.payload==0?0:1);
     break;
 
-  case living_dicroLight: 
-    this->demux(packet.payload, 8, living_dicro);
+  case living_dicroLight: {
+    int living_dicro[] = {
+      living_dicro_1,
+      living_dicro_2,
+      living_dicro_3,
+      living_dicro_4,
+      living_dicro_5,
+      living_dicro_6,
+      living_dicro_7,
+      living_dicro_8
+    };
+    this->demux(packet.payload, 8, living_dicro);}
     break;
 
-  case living_spotLight: 
-    this->demux(packet.payload, 2, living_spots);
+  case living_spotLight:{
+    int living_spots[] = {
+      living_booksh,
+      living_corner
+    };
+    this->demux(packet.payload, 2, living_spots);}
     break;
   
-  case living_fxLight: 
-    this->demux(packet.payload, 2, living_fxs);
+  case living_fxLight: {
+    int living_fxs[] = {
+      living_fx1,
+      living_fx2
+    };
+    this->demux(packet.payload, 2, living_fxs);}
     break;
 
 //uncoded environments
@@ -106,16 +141,18 @@ void RfNodes::parsePacket(Packet packet){
     static_cast<Environment*>(dev)->update(envenm_press, rfLink->codec->pressureDecode(packet.payload));}    
     break;
 
-//nodes
+
   default:
-    Serial.printf("RfNodes::parsePacket| unknown reference %i\n", packet.id);
+    //delegate parse to device (if exists)
+    Device* dev = Devices::getInstance()->get(packet.id);
+    if(dev) {dev->update(packet.payload);}
+    else {Serial.printf("RfNodes::parsePacket| unknown reference %i\n", packet.id);};
+    
     break;
   };
-
-
 };
 
-
+// demux bits into single devices
 void RfNodes::demux(long payload, int devLen, int* devArray){
   int pos=0;
 

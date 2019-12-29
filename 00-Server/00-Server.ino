@@ -9,7 +9,7 @@ Devices *devices = devices->getInstance();
 //RF link
 #include <RFlink.h>
 void onRFrxCallback(Packet devicePacket);
-RFlink rfLink(onRFrxCallback);
+static RFlink rfLink(onRFrxCallback);
 
 //Node manager
 #include "src/Server/RfNodes.h"
@@ -76,15 +76,5 @@ void runTask(){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RF hook
 void onRFrxCallback(Packet pkt){
-  Serial.println("::RFrxCallback");
-  Device* dev = devices->get(pkt.id);
-  
-  if(!dev) //delegate parse
-    return rfNodes.parsePacket(pkt);
-  
-  Serial.println("->updateDevice");
-  Serial.println(dev->id);
-  
-  //dev->update(pkt.payload);
-  pkt.toString();
+  rfNodes.parsePacket(pkt); //delegate rfNodes
 };
