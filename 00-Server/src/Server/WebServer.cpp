@@ -27,23 +27,29 @@ void WebServer::setup(){
         Serial.println("An Error has occurred while mounting SPIFFS");
     }
 
+    //api endpoints    
+    server.on("/api/task", HTTP_POST, nullRequest, NULL, api_addTask);            // -> node status
+    server.on("/api/update", HTTP_POST, nullRequest, NULL, api_updateNodeStatus); // -> node update
+    server.on("/api/rfsend", HTTP_POST, nullRequest, NULL, api_sendRfRequest);    // <- rf send request
+
+    server.on("/api", HTTP_GET, api_pingReply);                                   // -> status request
+    server.on("/api", HTTP_POST, api_serverStatus);                               // -> status request
+    //server.on("/api", HTTP_POST, nullRequest, NULL, api_serverStatus);          // <- node status    
+
+    server.onNotFound(notFound);
+
     //enable cors
     DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
+    DefaultHeaders::Instance().addHeader("Access-Control-Max-Age", "10000");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    //force no-cache
     DefaultHeaders::Instance().addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     DefaultHeaders::Instance().addHeader("Pragma", "no-cache");
     DefaultHeaders::Instance().addHeader("Expires", "0");
     DefaultHeaders::Instance().addHeader("Server", "HouzControl/4.0.0");
 
-    //api endpoints    
-    server.on("/api/task", HTTP_POST, nullRequest, NULL, api_addTask);         // -> node status
-    server.on("/api/update", HTTP_POST, nullRequest, NULL, api_updateNodeStatus); // -> node update
-    server.on("/api/rfsend", HTTP_POST, nullRequest, NULL, api_sendRfRequest);    // <- rf send request
-
-    server.on("/api", HTTP_GET, api_pingReply);                                   // -> status request
-    server.on("/api", HTTP_POST, nullRequest, NULL, api_serverStatus);            // <- node status    
-
-
-    server.onNotFound(notFound);
     server.begin();
 
 };
@@ -55,10 +61,16 @@ void WebServer::setup(){
 
 //not found response
 void notFound(AsyncWebServerRequest *request) {
+  if (request->method() == HTTP_OPTIONS) {
+    request->send(200);
+  } else {
     request->send(404, "text/plain", "lib - Not found");
+  }
 };
 
-void nullRequest(AsyncWebServerRequest *request){};
+void nullRequest(AsyncWebServerRequest *request){
+  Serial.println(":nullRequest");
+};
 
 void api_return(AsyncWebServerRequest *request, String message, int code){
   request->send(code, "application/json", "{\"result\":\"" + message + "\"}");
@@ -151,7 +163,8 @@ void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // response with all nodes and devices 
-void WebServer::api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
+//void WebServer::api_serverStatus(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
+void WebServer::api_serverStatus(AsyncWebServerRequest *request){
   Serial.println("::api_serverStatus");
   String jsonStr;
   jsonStr = "{";
