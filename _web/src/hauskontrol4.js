@@ -1,70 +1,6 @@
+'use strict';
 const ui={
-  
-  device: {
-    build: ()=>{
-      devices.list.forEach(dev=>{
-      switch (dev.type) {
-        
-        case devType.Light:
-          dev.elem = el("<div class=\"btn light\"></div>");
-          dev.elem.textContent=dev.name;
-          if(dev.val==1) dev.elem.classList.add("on");
-          dev.elem.addEventListener("click", ()=>{
-            console.log("change light status..", dev);
-          }, true);
-          break;
-      
-        case devType.Fan:
-          //template
-          dev.elem = el("<div class=\"btn fan\"><div>fan</div><div class=\"up\"></div><div class=\"speed\"><span>-</span></div><div class=\"down\"></div></div>");
-          dev.espeed = dev.elem.querySelector(".speed span");
 
-          //setup
-          dev._on=dev.val>0;
-          dev.espeed.innerText=dev.val;
-          if(dev._on){
-            dev.elem.classList.add("on");
-            dev._speed=dev.val;
-          } 
-
-          // bindings //
-          //speed up
-          dev.elem.querySelector(".up").addEventListener("click", ()=>{
-            dev.speed++;
-            if(dev.speed>4){dev.speed=4; dev.val=4;}
-            dev.espeed.innerText=dev.speed;
-          });
-          //speed down
-          dev.elem.querySelector(".down").addEventListener("click", ()=>{
-            dev.speed--;
-            if(dev.speed<1){
-              //turn off    
-              dev.speed=1; dev.val=0;dev.elem.classList.remove("on");
-            }
-            dev.espeed.innerText=dev.speed;
-            });
-          //on/off
-          dev.elem.querySelector("div:first-child").addEventListener("click", ()=>{
-            //switch state
-            if(dev._on){
-              dev._on=false;
-              dev.val=0;
-              dev.elem.classList.remove("on");
-            }else{
-              dev._on=true;
-              dev.val=dev._speed;
-              dev.elem.classList.add("on");
-            };
-          });
-          break;
-
-        default:
-          break;
-      }
-
-      });
-    }
-  },
   rooms: {
     list: [
       {id:1, name:"office", selected: false, elem: undefined},
@@ -90,7 +26,6 @@ const ui={
       let room = ui.rooms.getById(roomId);
       if(room==undefined || room.selected==true) return;
       room.selected=true;
-      console.log("set room>",roomId);
 
       //select on room menu
       ui.rooms.list.forEach((_room)=>{
@@ -116,18 +51,17 @@ const ui={
     }
   },
   setup: ()=>{
-    if(typeof devices == 'undefined'){
+    if(typeof devices == 'undefined' || typeof api == 'undefined'){
       setTimeout(ui.setup, 100);
       return;
     }
-
-    ui.device.build(); //render device elements
+    devices.setup();   //fetch devices from api
     ui.rooms.bind();   //bind room buttons
 
   }
 };
 
-
-
 //setup
-(()=>{ui.setup();})();
+(()=>{
+  ui.setup();
+})();
