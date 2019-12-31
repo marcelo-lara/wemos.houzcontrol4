@@ -7,8 +7,8 @@ Device* Devices::get(u8 deviceId){
       return list[i];
     i++;
   }
-  Serial.printf("WARN: device %i not found!!\n", deviceId);
-  return NULL;
+  Serial.printf("WARN: device 0x%2X not found!!\n", deviceId);
+  return {new Device(0, devtype_undefined)};
 };
 
 void Devices::set(u8 deviceId, u32 payload){

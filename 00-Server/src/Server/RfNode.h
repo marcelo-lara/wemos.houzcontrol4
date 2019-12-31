@@ -21,6 +21,7 @@ public:
   RfNodeStatus status = nodeStatus_unknown;
   long nextQuery = 0;
   long awaitTimeout = 0;
+  void printStatus();
 
   //status changers
   void onAck();
@@ -28,4 +29,5 @@ public:
   bool onUpdate();
   bool isTimeout();
   RfNode_updater raise_updater;
+  void setStatus(RfNodeStatus newStatus);
 };

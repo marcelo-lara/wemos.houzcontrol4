@@ -52,10 +52,13 @@ String Light::toJson(){
 // Actions
 void Light::turnOn(){this->set(true);};
 void Light::turnOff(){this->set(false);};
+
+//set physical device to state
 void Light::set(bool _on){
   this->on=_on;
   if(this->isLocal){
     Serial.println("setLocalLight()");
+    return;
   };
   
   //send command to node
@@ -67,14 +70,22 @@ void Light::set(bool _on){
     };
   };
 };
+
+//set light status
 void Light::set(long payload){
   this->set(payload!=0);
 };
 
+//request to query device
 void Light::update(){
+  if(this->isLocal){}
+  else   
+    taskManager->addTask(command_request_update, (muxCh>0)?muxCh:id, 0, this->node);
+
 };
+
+//update device values with received payload
 void Light::update(long _payload){
-  Serial.println("Light::update()");
   if(!this->isLocal){
     this->on=(_payload!=0);
   };

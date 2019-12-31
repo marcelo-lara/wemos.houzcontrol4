@@ -8,16 +8,15 @@ RfNode::RfNode(NodeEnm node){
 
 //determine if we are awaiting response from node
 bool RfNode::isTimeout(){
-  if(this->status!=nodeStatus_awaiting_response) return false;
+  //if(this->status!=nodeStatus_awaiting_response) return false;
   return (awaitTimeout<millis());
 };
 
 //raise when timeout is reached
 void RfNode::onTimeout(){
-  status=nodeStatus_lost;
-  nextQuery=millis()+5000; //retry in 5s
-  Serial.printf("-> RfNode[%i].onTimeout \n", this->node);
-
+  // Serial.printf("[%i]RfNode::onTimeout\n", this->node);
+  this->setStatus(nodeStatus_lost);
+  nextQuery=millis()+20000; //retry in 5s
 };
 
 //update node values
@@ -28,7 +27,7 @@ bool RfNode::onUpdate(){
 
   //setup update
   awaitTimeout=millis()+1000;
-  status=nodeStatus_awaiting_response;
+  this->setStatus(nodeStatus_awaiting_response);
 
   //raise update
   this->raise_updater();
@@ -37,6 +36,16 @@ bool RfNode::onUpdate(){
 
 //data received from node
 void RfNode::onAck(){
-  status=nodeStatus_ready;
+  // Serial.printf("[%i]RfNode::onAck\n", this->node);
+  this->setStatus(nodeStatus_ready);
   nextQuery=millis()+RfNodePollInterval;
+};
+
+void RfNode::setStatus(RfNodeStatus newStatus){
+  // Serial.printf("\t[%i]RfNode::setStatus %i->%i\n", this->node, this->status, newStatus);
+  this->status=newStatus;
+};
+
+void RfNode::printStatus(){
+  Serial.printf("RFnode|%i - status:%i\n", this->node, this->status);
 };

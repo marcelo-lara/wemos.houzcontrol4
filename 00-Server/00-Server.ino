@@ -50,22 +50,33 @@ void runTask(){
   Serial.print("TASK| ");
   switch (task.command){
 
-  case command_set_device:
-    Serial.println("command_set_device");
-    {Device* dev = devices->get(task.device.id);
-    if(dev) {dev->set(task.device.payload);}
-    else {Serial.printf("command_set_device> unknown device 0x%2X\n", task.device.id);};}
+  
+  case command_update_device:
+    Serial.printf("command_update_device 0x%2X->0x%4X\n",task.device.id, task.device.payload);
+    devices->get(task.device.id)->update(task.device.payload);
     break;
 
+  case command_set_device:
+    Serial.printf("command_set_device 0x%2X->0x%4X\n",task.device.id, task.device.payload);
+    devices->get(task.device.id)->set(task.device.payload);
+    break;
+
+  // RF related /////////////////////////////////////////////////
   case command_rf_send: 
-    Serial.println("command_rf_send");
+    Serial.printf("command_rf_send %i-0x%2X->0x%4X\n",task.device.node, task.device.id, task.device.payload);
     rfLink.send(Packet(task.device.id, RFCMD_SET, task.device.payload, task.device.node));
     break;
-
-  case command_fan_off: 
-    {Device* dev = devices->get(task.device.id);
-    if(dev || dev->type==devtype_fan) ((Fan*)dev)->turnOff();}
+  case command_rf_query: 
+    Serial.printf("command_rf_query %i-0x%2X\n",task.device.node, task.device.id);
+    rfLink.send(Packet(task.device.id, RFCMD_QUERY, 0, task.device.node));
     break;
+
+  // Scene Cue /////////////////////////////////////////////////
+  case command_play_scene: 
+    Serial.println("command_play_scene");
+    break;
+
+  // Custom actions /////////////////////////////////////////////////
   case command_fan_on: 
     {Device* dev = devices->get(task.device.id);
     if(dev || dev->type==devtype_fan) ((Fan*)dev)->turnOn();}
@@ -76,14 +87,6 @@ void runTask(){
     else {Serial.printf("command_fan_speed> unknown device 0x%2X\n", task.device.id);};}
     break;
 
-  case command_play_scene: 
-    Serial.println("command_play_scene");
-    break;
-
-  case command_rf_query: 
-    Serial.println("command_rf_query");
-    rfLink.send(Packet(task.device.id, RFCMD_QUERY, 0, task.device.node));
-    break;
 
   default:
     Serial.printf("unknown command %i\n", task.command);

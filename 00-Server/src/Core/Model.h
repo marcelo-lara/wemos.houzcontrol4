@@ -59,10 +59,16 @@ public:
   virtual String toJson(){
     Serial.println("not implemented!!!!");
   };
+  
+  //request to query device
   virtual void update(){
     Serial.println("device::update()");
   };
+  
+  //update device values
   virtual void update(long _payload){};
+  
+  //set device output/behavior (hex encoded)
   virtual void set(long _payload){};
 
 };
@@ -73,6 +79,8 @@ public:
 // Task Command
 enum Command{
   command_not_defined,
+  command_request_update,
+  command_update_device,
   command_set_device ,
   command_play_scene ,
   command_set_scene  ,
@@ -82,8 +90,7 @@ enum Command{
   command_scene_pause,
   command_set_on     ,
   command_fan_on     ,
-  command_fan_off    ,
-  command_fan_speed
+  command_fan_speed  
   
 };
 
