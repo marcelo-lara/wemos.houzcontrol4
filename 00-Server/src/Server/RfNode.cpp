@@ -15,7 +15,7 @@ bool RfNode::isTimeout(){
 //raise when timeout is reached
 void RfNode::onTimeout(){
   status=nodeStatus_lost;
-  nextQuery=millis()+RfNodePollInterval;
+  nextQuery=millis()+5000; //retry in 5s
   Serial.printf("-> RfNode[%i].onTimeout \n", this->node);
 
 };

@@ -2,11 +2,15 @@
 Fan::Fan(int id, Zone zone, NodeEnm node):Device(id, devtype_fan, zone){
   this->node=node;
 };
-
+void Fan::set(long payload){
+  if(payload==0)
+    this->turnOff();
+  else
+    this->setSpeed(payload);
+};
 //turn fan on
 void Fan::turnOn(){
-  if(this->_onSpeed==0) this->_onSpeed=3; //default speed
-  this->speed=this->_onSpeed;
+  if(this->speed==0) this->speed=this->_onSpeed; //default speed
   TaskManager::getInstance()->addTask(command_rf_send, this->id, this->speed);
 };        
 
@@ -48,5 +52,6 @@ void Fan::update(){
 };
 void Fan::update(long _payload){
   Serial.printf("[%i]Fan::update(payload:%l)\n", this->id, _payload);
-    this->on=!_payload==0;
+    this->on=(_payload!=0);
+    if(_payload>0) this->speed=_payload;
 };

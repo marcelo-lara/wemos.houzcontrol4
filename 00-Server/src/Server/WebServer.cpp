@@ -69,7 +69,6 @@ void notFound(AsyncWebServerRequest *request) {
 };
 
 void nullRequest(AsyncWebServerRequest *request){
-  Serial.println(":nullRequest");
 };
 
 void api_return(AsyncWebServerRequest *request, String message, int code){
@@ -103,11 +102,11 @@ void api_addTask(AsyncWebServerRequest *request, uint8_t *data, size_t len, size
   DeserializationError error = deserializeJson(doc, (char *)data);
   if (error) return api_returnError(request, "error parsing json");
 
-  int cmd = doc["task"];
-  if(cmd==0 || cmd>9) return api_returnError(request,"error task is not valid");
+  int tsk = doc["task"];
+  if(tsk==0 || tsk>9) return api_returnError(request,"error task is not valid");
   int id = doc["id"];
   long payload = doc["payload"];
-  switch (cmd)
+  switch (tsk)
   {
   case (int)command_set_device:
     if(id==0) return api_return(request, "error: id is not set", 422);

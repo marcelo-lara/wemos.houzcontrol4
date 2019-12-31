@@ -67,12 +67,15 @@ void Light::set(bool _on){
     };
   };
 };
+void Light::set(long payload){
+  this->set(payload!=0);
+};
 
 void Light::update(){
-  if(!this->isLocal){
-    taskManager->addTask(command_rf_query, this->id, 0, this->node);
-  }
 };
 void Light::update(long _payload){
-  if(!this->isLocal){this->on=!_payload==0;};
+  Serial.println("Light::update()");
+  if(!this->isLocal){
+    this->on=(_payload!=0);
+  };
 };

@@ -29,6 +29,23 @@ const zones = {
   outside : 6
 };
 
+//tasks
+const tasks = {
+  not_defined: 0,
+  set_device : 1,
+  play_scene : 2,
+  set_scene  : 3,
+  rf_send    : 4,
+  ir_send    : 5,
+  rf_query   : 6,
+  scene_pause: 7,
+  set_on     : 8,
+  fan_on     : 9,
+  fan_off    :10,
+  fan_speed  :11
+};
+
+
 const devices = {
   list: [
     {id:0x00, name:'server_node', type: 0, on: 0, val: 0, zone: 0, elem: undefined},
@@ -48,7 +65,7 @@ const devices = {
     return undefined;
   },
   setup: ()=>{
-    api.post()
+    return api.post()
        .then(devices._setup_post);
   },
   _setup_post: (data)=>{
@@ -61,6 +78,7 @@ const devices = {
           break;
       }
     };
+    return devices.list;
   }
 };
 

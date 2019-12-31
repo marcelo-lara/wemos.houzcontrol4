@@ -62,20 +62,8 @@ public:
   virtual void update(){
     Serial.println("device::update()");
   };
-  virtual void update(long _payload){
-    switch (this->type)
-    {
-    case devtype_light:
-      Serial.print("<devtype_light>");
-      break;
-    
-    default:
-      Serial.print("unknown deviceType ");
-      Serial.println(this->type);
-      break;
-    }
-    
-  };
+  virtual void update(long _payload){};
+  virtual void set(long _payload){};
 
 };
 
@@ -84,6 +72,7 @@ public:
 
 // Task Command
 enum Command{
+  command_not_defined,
   command_set_device ,
   command_play_scene ,
   command_set_scene  ,
@@ -91,7 +80,11 @@ enum Command{
   command_ir_send    ,
   command_rf_query   ,
   command_scene_pause,
-  command_set_on     
+  command_set_on     ,
+  command_fan_on     ,
+  command_fan_off    ,
+  command_fan_speed
+  
 };
 
 // Task

@@ -7,6 +7,8 @@ Environment::Environment(int id, Zone zone, NodeEnm node, int chTemp, int chHum,
   this->chPress=chPress;
   this->chLight=chLight;
 };
+void Environment::set(long payload){};
+
 
 String Environment::toJson(){
   String json = "{\"id\":";

@@ -49,13 +49,31 @@ void runTask(){
   Task task = TaskManager::getInstance()->getNextTask();
   Serial.print("TASK| ");
   switch (task.command){
-  case command_set_device: 
+
+  case command_set_device:
     Serial.println("command_set_device");
+    {Device* dev = devices->get(task.device.id);
+    if(dev) {dev->set(task.device.payload);}
+    else {Serial.printf("command_set_device> unknown device 0x%2X\n", task.device.id);};}
     break;
 
   case command_rf_send: 
     Serial.println("command_rf_send");
     rfLink.send(Packet(task.device.id, RFCMD_SET, task.device.payload, task.device.node));
+    break;
+
+  case command_fan_off: 
+    {Device* dev = devices->get(task.device.id);
+    if(dev || dev->type==devtype_fan) ((Fan*)dev)->turnOff();}
+    break;
+  case command_fan_on: 
+    {Device* dev = devices->get(task.device.id);
+    if(dev || dev->type==devtype_fan) ((Fan*)dev)->turnOn();}
+    break;
+  case command_fan_speed: 
+    {Device* dev = devices->get(task.device.id);
+    if(dev || dev->type==devtype_fan) ((Fan*)dev)->setSpeed(task.device.payload);
+    else {Serial.printf("command_fan_speed> unknown device 0x%2X\n", task.device.id);};}
     break;
 
   case command_play_scene: 

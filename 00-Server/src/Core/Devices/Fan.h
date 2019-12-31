@@ -18,6 +18,7 @@ public:
 
   void update();
   void update(long _payload);
+  void set(long payload);//device ext
 
 private:
   //default on speed
