@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>HausKontrol4</title>
+    <meta name="description" content="DarkBlue environment control">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/hauskontrol.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="title"></div>
+
+        <div class="rooms">
+            <div class="suite on" room="2">Suite</div>
+            <div class="living"   room="3">Living</div>
+            <div class="office"   room="1">Office</div>
+            <div class="kitchen"  room="4">Kitchen</div>
+        </div>
+
+        <!-- <div class="wtemp temp">28.7º</div>
+        <div class="whum">1004hPa</div>
+        <div class="wpres">76.5%</div> -->
+        <div class="weather">--</div>
+
+        <div class="master-scene">
+          <div class="btn">goodbye</div>
+          <div class="btn run">welcome</div>
+          <div class="btn">dragon</div>
+        </div>
+
+        <div class="status">21:17</div>
+
+        <div class="panel">
+          <div class="btn s">btn.s</div>
+          <div class="btn s on">btn.s</div>
+          <div class="btn m">--btn--</div>
+          <div class="btn fan on"><div>fan</div><div class="up"></div><div class="speed"><span>3</span></div><div class="down"></div></div>
+          <div class="btn ac on"><div>ac</div><div class="up"></div><div class="speed"><span>24</span></div><div class="down"></div></div>
+        </div>
+
+        <div class="subpanel">
+          <div class="btn w">dashboard</div>
+          <div class="btn w">devices</div>
+          <div class="btn w">scenes</div>
+        </div>
+
+        <div class="power">
+            <div class="btn"></div>
+        </div>
+    </div>
+
+    <script src="src/utils.js" async></script>
+    <script src="src/devices/light.js" async></script>
+    <script src="src/devices/fan.js" async></script>
+    <script src="src/devices.js" async></script>
+
+    <script src="src/hauskontrol4.js" async ></script>
+</body>
+
+</html>

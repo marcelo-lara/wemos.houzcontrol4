@@ -5,6 +5,7 @@ class Light{
     this.id=dev.id;
     this.zone=dev.zone;
     this.on=dev.on;
+    this.name=dev.name||"Light";
 
     //build element
     this.elem=el("<div class=\"btn light\"></div>");

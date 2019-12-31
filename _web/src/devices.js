@@ -31,20 +31,27 @@ const zones = {
 
 //tasks
 const tasks = {
-  not_defined: 0,
-  set_device : 1,
-  play_scene : 2,
-  set_scene  : 3,
-  rf_send    : 4,
-  ir_send    : 5,
-  rf_query   : 6,
-  scene_pause: 7,
-  set_on     : 8,
-  fan_on     : 9,
-  fan_off    :10,
-  fan_speed  :11
+  not_defined    :  0,
+  request_update :  1,
+  update_device  :  2,
+  set_device     :  3,
+  play_scene     :  4,
+  set_scene      :  5,
+  rf_send        :  6,
+  ir_send        :  7,
+  rf_query       :  8,
+  scene_pause    :  9,
+  set_on         : 10,
+  fan_on         : 11,
+  fan_speed      : 12
 };
 
+const enumToString= (enm, id)=>{
+  for(const i in  enm){
+    console.log(i, enm[i], (id==enm[i]?"<<<":""));
+    if(id==enm[i]) return i;
+  }
+};
 
 const devices = {
   list: [

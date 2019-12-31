@@ -16,7 +16,7 @@ const ui = {
       row.style="";
       row.querySelector("td.id").innerText = dev.id;
       row.querySelector("td.type").innerText = dev.constructor.name;
-      row.querySelector("td.zone").innerText = dev.zone;
+      row.querySelector("td.zone").innerText = enumToString(zones, dev.zone);
       row.querySelector("td.name").innerText = dev.name;
       row.querySelector("td.on").innerText = dev.on;
       if(dev.elem)
