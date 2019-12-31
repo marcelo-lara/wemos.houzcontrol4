@@ -61,6 +61,11 @@ void runTask(){
     devices->get(task.device.id)->set(task.device.payload);
     break;
 
+  case command_set_on:
+    Serial.printf("command_set_on 0x%2X->0x%4X\n",task.device.id, task.device.payload);
+    devices->get(task.device.id)->setOn(task.device.payload==0?false:true);
+    break;
+
   // RF related /////////////////////////////////////////////////
   case command_rf_send: 
     Serial.printf("command_rf_send %i-0x%2X->0x%4X\n",task.device.node, task.device.id, task.device.payload);
@@ -78,15 +83,16 @@ void runTask(){
 
   // Custom actions /////////////////////////////////////////////////
   case command_fan_on: 
+    Serial.printf("command_fan_on 0x%2X->0x%4X\n",task.device.id, task.device.payload);
     {Device* dev = devices->get(task.device.id);
-    if(dev || dev->type==devtype_fan) ((Fan*)dev)->turnOn();}
+    if(dev || dev->type==devtype_fan) ((Fan*)dev)->setOn(task.device.payload==0?false:true);}
     break;
   case command_fan_speed: 
+    Serial.printf("command_fan_speed 0x%2X->0x%4X\n",task.device.id, task.device.payload);
     {Device* dev = devices->get(task.device.id);
     if(dev || dev->type==devtype_fan) ((Fan*)dev)->setSpeed(task.device.payload);
     else {Serial.printf("command_fan_speed> unknown device 0x%2X\n", task.device.id);};}
     break;
-
 
   default:
     Serial.printf("unknown command %i\n", task.command);

@@ -21,7 +21,7 @@ public:
 
   void turnOn();        //turn light on
   void turnOff();       //turn light off
-  void set(bool _on);   //turn light on/off
+  void setOn(bool _on);   //turn light on/off
   void set(long payload);//device ext
 
   void update();

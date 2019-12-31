@@ -21,11 +21,7 @@ class Light{
     this.on=!this.on;
     if(this.on) this.elem.classList.add("on") 
     else this.elem.classList.remove("on") 
+    api.addTask(tasks.set_device, this.id, this.on?1:0);
     console.log("light|", this.on?"on":"off");
-    api.post("/task","POST",{
-      task: tasks.set_device,
-      id: this.id,
-      payload: this.on?1:0
-    });
   }
 }

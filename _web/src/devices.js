@@ -48,7 +48,6 @@ const tasks = {
 
 const enumToString= (enm, id)=>{
   for(const i in  enm){
-    console.log(i, enm[i], (id==enm[i]?"<<<":""));
     if(id==enm[i]) return i;
   }
 };

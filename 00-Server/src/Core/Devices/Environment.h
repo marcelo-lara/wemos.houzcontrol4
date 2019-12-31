@@ -15,6 +15,7 @@ public:
   Environment(int id, Zone zone, NodeEnm node, int chTemp, int chHum, int chPress, int chLight);
   String toJson();
   void set(long payload);//device ext
+  void setOn(bool _on){};
 
   bool  on=0;     //sensor is on
   float temp=0;   //temperature

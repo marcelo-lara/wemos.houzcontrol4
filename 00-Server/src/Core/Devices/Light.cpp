@@ -54,7 +54,7 @@ void Light::turnOn(){this->set(true);};
 void Light::turnOff(){this->set(false);};
 
 //set physical device to state
-void Light::set(bool _on){
+void Light::setOn(bool _on){
   this->on=_on;
   if(this->isLocal){
     Serial.println("setLocalLight()");
@@ -73,7 +73,7 @@ void Light::set(bool _on){
 
 //set light status
 void Light::set(long payload){
-  this->set(payload!=0);
+  this->setOn(payload!=0);
 };
 
 //request to query device

@@ -14,11 +14,12 @@ public:
   void setSpeed(int speed);
 
   bool on      = 0; 
-  int  speed   = 0; 
+  int  speed   = 3; //default speed
 
   void update();
   void update(long _payload);
-  void set(long payload);//device ext
+  void setOn(bool _on);//device ext
+  void set(long _payload);//device ext
 
 private:
   //default on speed

@@ -21,7 +21,13 @@ const api={
     let _data = await response.json();
     return _data; // parses JSON response into native JavaScript objects
   },
-
+  addTask: (_task, _id, _payload)=>{
+    return api.post("/task","POST",{
+      task: _task,
+      id: _id,
+      payload: _payload
+    });
+  },
   link: ()=>{}
 };
 

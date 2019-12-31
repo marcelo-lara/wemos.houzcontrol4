@@ -103,29 +103,21 @@ void api_addTask(AsyncWebServerRequest *request, uint8_t *data, size_t len, size
   if (error) return api_returnError(request, "error parsing json");
 
   int tsk = doc["task"];
-  if(tsk==0 || tsk>9) return api_returnError(request,"error task is not valid");
+  if(tsk==0 || tsk>99) return api_returnError(request,"error task is not valid");
   int id = doc["id"];
   long payload = doc["payload"];
-  switch (tsk)
+  if(id==0) return api_return(request, "error: id is not set", 422);
+
+  try
   {
-  case (int)command_set_device:
-    if(id==0) return api_return(request, "error: id is not set", 422);
-    TaskManager::getInstance()->addTask(command_set_device, id, payload);    
-    return api_return(request, "set_device enqueued", 200);
-    break;
-
-  case (int)command_play_scene:
-    if(payload==0) return api_returnError(request, "error: scene not set");
-    TaskManager::getInstance()->addTask(command_play_scene, id, payload);    
-    return api_return(request, "play_scene enqueued", 200);
-    break;  
-
-  default:
-    return api_return(request, "command not handled", 422);
-    break;
+    Command cTsk = (Command)tsk;
+    TaskManager::getInstance()->addTask(cTsk, id, payload);    
+    request->send(200, "application/json", "{\"result\":\"ok\"}");
   }
-
-  request->send(200, "application/json", "task enqueed");
+  catch(const std::exception& e)
+  {
+    return api_return(request, e.what(), 422);
+  }
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

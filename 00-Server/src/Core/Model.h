@@ -71,6 +71,9 @@ public:
   //set device output/behavior (hex encoded)
   virtual void set(long _payload){};
 
+  //turn device on/off (hex encoded)
+  virtual void setOn(bool _on){};
+
 };
 
 ///////////////////////////////////////////////////////////////////////////
