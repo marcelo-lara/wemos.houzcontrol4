@@ -78,18 +78,18 @@ public:
 
 // Task Command
 enum Command{
-  command_not_defined,
-  command_request_update,
-  command_update_device,
-  command_set_device ,
-  command_play_scene ,
-  command_set_scene  ,
-  command_rf_send    , 
-  command_ir_send    ,
-  command_rf_query   ,
-  command_scene_pause,
-  command_set_on     ,
-  command_fan_on     ,
+  command_not_defined     ,
+  command_request_update  ,
+  command_update_device   ,
+  command_set_device      ,
+  command_play_scene      ,
+  command_set_scene       ,
+  command_rf_send         , 
+  command_ir_send         ,
+  command_rf_query        ,
+  command_scene_pause     ,
+  command_set_on          ,
+  command_fan_on          ,
   command_fan_speed  
   
 };
