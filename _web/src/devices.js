@@ -79,6 +79,7 @@ const devices = {
       switch(dev.type){
         case devType.light: devices.list.push(new Light(dev)); break;
         case devType.fan:   devices.list.push(new Fan(dev));   break;
+        case devType.env:   devices.list.push(new Environment(dev));   break;
         default:
           console.log("unhandled type:", dev.type);
           break;

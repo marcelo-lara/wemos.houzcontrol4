@@ -13,8 +13,10 @@
     <style type="text/css">
       .ta-r{text-align: right;}
       .html div{width: 65pt;height: 22pt;border: 1px solid #666;}
-      .up {content: '+';color: #fff;}
-      .down {content: '-';}
+      td>div.fan {height: 65pt;}
+      div.fan>.up {content: '+';color: #fff;width: 15pt;display: inline-block;}
+      div.fan>.down {content: '-';width: 15pt;display: inline-block;}
+      div.fan>.speed {width: 15pt; display: inline-block;}
       .on {background: #060}
     </style>
 </head>
@@ -44,6 +46,7 @@
   <script src="src/utils.js" async></script>
   <script src="src/devices/light.js" async></script>
   <script src="src/devices/fan.js" async></script>
+  <script src="src/devices/environment.js" async></script>
   <script src="src/devices.js" async></script>
 
   <script src="api.js" async ></script>
