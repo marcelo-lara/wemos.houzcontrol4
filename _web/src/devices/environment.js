@@ -14,16 +14,23 @@ class Environment{
     this.light = dev.light;
 
     //build element
-    this.elem=el("<div class=\"env\"><span class=\"temp\" /><span class=\"humidity\" /><span class=\"pressure\" /><span class=\"light\"/></div>");
+    this.elem=el("<div class=\"env\"><span class=\"temp\"></span>º| <span class=\"humidity\"></span>%| <span class=\"pressure\"></span>hPa| <span class=\"light\"></span></div>");
     
 
-   // this.elems.temp= this.elem.querySelector(".temp");
+    this.tempElem= this.elem.querySelector(".temp");
+    this.humidityElem= this.elem.querySelector(".humidity");
+    this.pressureElem= this.elem.querySelector(".pressure");
+    this.lightElem= this.elem.querySelector(".light");
+    
 
     this.renderStatus();
   }
 
   renderStatus(){
-  //  this.elems.temp.textContent = this.temp;
+    this.tempElem.textContent = this.temp;
+    this.humidityElem.textContent = this.humidity;
+    this.pressureElem.textContent = this.pressure;
+    this.lightElem.textContent = this.light;
   }
 
   changeState(){
