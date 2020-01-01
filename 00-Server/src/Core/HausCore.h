@@ -9,5 +9,6 @@
 #include "Devices/Light.h"
 #include "Devices/Fan.h"
 #include "Devices/Environment.h"
+#include "Devices/AC.h"
 
 
