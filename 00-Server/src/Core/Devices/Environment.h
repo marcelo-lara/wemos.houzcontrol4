@@ -24,7 +24,7 @@ public:
   float light=0;  //light level
 
   void update();
-  void update(long _payload);
+  void decode(long _payload);
   void update(EnvironmentParam param, float val);
   long ts=0;     //sampled data timestamp
 

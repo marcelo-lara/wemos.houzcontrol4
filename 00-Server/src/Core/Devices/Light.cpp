@@ -85,7 +85,7 @@ void Light::update(){
 };
 
 //update device values with received payload
-void Light::update(long _payload){
+void Light::decode(long _payload){
   if(!this->isLocal){
     this->on=(_payload!=0);
   };

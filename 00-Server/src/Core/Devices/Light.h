@@ -25,7 +25,7 @@ public:
   void set(long payload);//device ext
 
   void update();
-  void update(long _payload);
+  void decode(long _payload);
 
   u8   muxCh  = 0;      //channel of multpiplexer
 private:

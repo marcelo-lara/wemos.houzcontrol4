@@ -17,7 +17,7 @@ public:
   int  speed   = 3; //default speed
 
   void update();
-  void update(long _payload);
+  void decode(long _payload);
   void setOn(bool _on);//device ext
   void set(long _payload);//device ext
 

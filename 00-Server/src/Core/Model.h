@@ -66,7 +66,7 @@ public:
   };
   
   //update device values
-  virtual void update(long _payload){};
+  virtual void decode(long _payload){};
   
   //set device output/behavior (hex encoded)
   virtual void set(long _payload){};

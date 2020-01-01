@@ -92,7 +92,7 @@ void RfNodes::parsePacket(Packet packet){
 
   //muxed lights
   case living_mainLight:
-    Devices::getInstance()->get(living_main)->update(packet.payload==0?0:1);
+    Devices::getInstance()->get(living_main)->decode(packet.payload==0?0:1);
     break;
 
   case living_dicroLight: {
@@ -157,7 +157,7 @@ void RfNodes::parsePacket(Packet packet){
 
   default:
     //delegate parse to device (if exists)
-    Devices::getInstance()->get(packet.id)->update(packet.payload);
+    Devices::getInstance()->get(packet.id)->decode(packet.payload);
     break;
   };
 };
@@ -168,7 +168,7 @@ void RfNodes::demux(long payload, int devLen, int* devArray){
 
   //fill values
   while (payload){
-    Devices::getInstance()->get(devArray[pos])->update((payload&1)?1:0);
+    Devices::getInstance()->get(devArray[pos])->decode((payload&1)?1:0);
     payload>>=1;
     pos++;
     if(pos>devLen) return;
@@ -177,7 +177,7 @@ void RfNodes::demux(long payload, int devLen, int* devArray){
   //fill empty values
   if(pos<devLen){
     for (int i = pos; i < devLen; i++){
-      Devices::getInstance()->get(devArray[i])->update(0);
+      Devices::getInstance()->get(devArray[i])->decode(0);
     };
   }
 

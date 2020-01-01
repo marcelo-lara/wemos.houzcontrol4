@@ -53,7 +53,7 @@ void runTask(){
   
   case command_update_device:
     Serial.printf("command_update_device 0x%2X->0x%4X\n",task.device.id, task.device.payload);
-    devices->get(task.device.id)->update(task.device.payload);
+    devices->get(task.device.id)->decode(task.device.payload);
     break;
 
   case command_set_device:
