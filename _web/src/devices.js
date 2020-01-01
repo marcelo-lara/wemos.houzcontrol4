@@ -80,8 +80,9 @@ const devices = {
         case devType.light: devices.list.push(new Light(dev)); break;
         case devType.fan:   devices.list.push(new Fan(dev));   break;
         case devType.env:   devices.list.push(new Environment(dev));   break;
+        case devType.ac:    devices.list.push(new AC(dev));    break;
         default:
-          console.log("unhandled type:", dev.type);
+          console.log("unhandled type:", dev);
           break;
       }
     };
