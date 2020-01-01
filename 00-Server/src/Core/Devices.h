@@ -6,6 +6,7 @@
 #include "Devices/Light.h"
 #include "Devices/Fan.h"
 #include "Devices/Environment.h"
+#include "Devices/AC.h"
 
 // device storage
 class Devices{
@@ -20,7 +21,7 @@ public:
   static Devices* getInstance();
 
   //devices universe
-  Device *list[18]{
+  Device *list[21]{
     new Light(office_light  , zone_office, node_office),
     new Light(suite_light   , zone_suite,  node_suite),
     new Light(living_dicro_1, zone_living, node_living, living_dicroLight, 0),
@@ -37,10 +38,13 @@ public:
     new Light(living_fx1    , zone_living, node_living, living_fxLight,    0),
     new Light(living_fx2    , zone_living, node_living, living_fxLight,    1),
     new Fan(suite_fan, zone_suite, node_suite),
+    new AC(suite_AC,  zone_suite, node_suite),
+    new AC(office_AC,  zone_suite, node_suite),
+    new AC(living_AC,  zone_suite, node_suite),
     new Environment(external_weather, zone_outside, node_office, external_temp, external_humidity, external_pressure, external_light),
     new Environment(suite_enviroment, zone_suite, node_suite, suite_temp, suite_humidity, suite_pressure, suite_light)
   };
-  int listLen = 18; //total channels
+  int listLen = 21; //total channels
   Device* get(u8 deviceId);
   Device* getByMux(int muxCh);
   void set(u8 deviceId, u32 payload);
