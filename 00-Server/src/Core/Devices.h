@@ -37,10 +37,10 @@ public:
     new Light(living_corner , zone_living, node_living, living_spotLight,  1),
     new Light(living_fx1    , zone_living, node_living, living_fxLight,    0),
     new Light(living_fx2    , zone_living, node_living, living_fxLight,    1),
-    new Fan(suite_fan, zone_suite, node_suite),
-    new AC(suite_AC,  zone_suite, node_suite),
-    new AC(office_AC,  zone_suite, node_suite),
-    new AC(living_AC,  zone_suite, node_suite),
+    new Fan(suite_fan       , zone_suite,  node_suite),
+    new AC(suite_AC         , zone_suite,  node_suite),
+    new AC(office_AC        , zone_suite,  node_suite),
+    new AC(living_AC        , zone_suite,  node_suite),
     new Environment(external_weather, zone_outside, node_office, external_temp, external_humidity, external_pressure, external_light),
     new Environment(suite_enviroment, zone_suite, node_suite, suite_temp, suite_humidity, suite_pressure, suite_light)
   };

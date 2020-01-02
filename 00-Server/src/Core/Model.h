@@ -93,7 +93,8 @@ enum Command{
   command_scene_pause     ,
   command_set_on          ,
   command_fan_on          ,
-  command_fan_speed  
+  command_fan_speed       ,
+  command_send_to_mux
   
 };
 

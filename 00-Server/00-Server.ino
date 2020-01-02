@@ -94,6 +94,10 @@ void runTask(){
     else {Serial.printf("command_fan_speed> unknown device 0x%2X\n", task.device.id);};}
     break;
 
+  case command_send_to_mux:
+    
+    break;
+
   default:
     Serial.printf("unknown command %i\n", task.command);
     break;

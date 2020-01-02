@@ -80,6 +80,11 @@ void RfNodes::ackNode(int _node){
    }
 };
 
+void RfNodes::sendToMux(int muxCh, int pos, bool on){
+
+};
+
+
 
 //handle received rf packet
 void RfNodes::parsePacket(Packet packet){
@@ -96,33 +101,15 @@ void RfNodes::parsePacket(Packet packet){
     break;
 
   case living_dicroLight: {
-    int living_dicro[] = {
-      living_dicro_1,
-      living_dicro_2,
-      living_dicro_3,
-      living_dicro_4,
-      living_dicro_5,
-      living_dicro_6,
-      living_dicro_7,
-      living_dicro_8
-    };
-    this->demux(packet.payload, 8, living_dicro);}
+    this->mux[1]->demux(packet.payload);}
     break;
 
   case living_spotLight:{
-    int living_spots[] = {
-      living_booksh,
-      living_corner
-    };
-    this->demux(packet.payload, 2, living_spots);}
+    this->mux[3]->demux(packet.payload);}
     break;
 
   case living_fxLight: {
-    int living_fxs[] = {
-      living_fx1,
-      living_fx2
-    };
-    this->demux(packet.payload, 2, living_fxs);}
+    this->mux[2]->demux(packet.payload);}
     break;
 
 //uncoded environments
