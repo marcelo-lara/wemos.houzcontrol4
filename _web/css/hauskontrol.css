@@ -24,6 +24,12 @@ div.power{grid-area:power}
 
 div.wrapper>div>div{flex:1 0 auto;overflow: hidden;}
 
+/*// masonry grid /////////////////*/
+.masonry-grid {display: grid !important;grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));grid-gap: 5pt;grid-auto-rows: minmax(200px, auto);grid-auto-flow: dense;padding: 5pt;align-items: unset !important;}  
+.masonry-grid>div {padding: 1rem;color: #929796;background-color: #333;}
+.masonry-grid>div.m-2c {grid-column-end: span 2;}
+.masonry-grid>div.m-2r {grid-row-end: span 2;}
+
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Common behaviors
 */
@@ -31,8 +37,8 @@ div.wrapper>div>div{flex:1 0 auto;overflow: hidden;}
 .btn:hover {background:#FFF2;transition: all 1s;}
 .btn::after{font-family:"Font Awesome 5 Free";font-weight:900;padding:0 0 0 5pt}
 
-.btn.s {width: 5vw; height:5vw;}
-.btn.m {width: 10vw; height:10vw;}
+/* .btn.s {width: 5vw; height:5vw;}
+.btn.m {width: 10vw; height:10vw;} */
 
 /*////////////////////////////
 // room selector
@@ -57,11 +63,11 @@ div.master-scene>div{flex: 1 0 auto;height: 100%;}
 
 /*////////////////////////////
 // devices/scenes panel     */
-div.wrapper>div.panel {display: flex;flex-wrap: wrap;padding: 5pt;flex-direction: column;max-height: 75vh;}
-div.panel div.btn{width: 10vw;min-width: 100pt;height: 10vw;padding: 5pt;flex: 1 1 10vw;max-width: 10vw;max-height: 10vw;min-height: 100pt;}
-div.panel div.btn.on{background:#66FF6666}
+div.panel div.on {background:#6f63; color: #FFFE}
+div>div::after{font-family:"Font Awesome 5 Free";font-weight:900;padding:0 0 0 5pt}
 
-div.fan {display: grid;
+/*fan*/
+div.panel>div.fan {display: grid;
   width: 100%;
   grid-template-areas: 
   "label up" 
@@ -69,15 +75,35 @@ div.fan {display: grid;
   "label down";
   grid-template-columns: 3fr 1fr;
 }
-div.fan>div{display: flex;align-items: center;margin: auto;padding: 5pt;width: 100%;text-align: right;}
-div.fan>div::after{font-family:"Font Awesome 5 Free";font-weight:900;padding:0 0 0 5pt}
-div.fan>div:first-child{grid-area: label;margin:0;align-self: flex-start;padding: 0;height: 100%;align-self: flex-start;align-content: flex-start;}
-div.fan>div.up{grid-area: up;}
-div.fan>div.down{grid-area: down}
-div.fan>div.speed{grid-area: speed;display: flex;align-items: center;}
-div.fan>div.speed>span{flex: 1; align-self: center;}
-div.fan>div.up::after{content: '\f077'}
-div.fan>div.down::after{content: '\f078'}
+div.panel>div.fan>div{display: flex; align-items: center; margin: auto;}
+div.panel>div.fan>div:first-child{grid-area: label;grid-row-end: span 3;margin:0; align-self: flex-start;}
+div.panel>div.fan>div.up{grid-area: up;}
+div.panel>div.fan>div.down{grid-area: down;}
+div.panel>div.fan>div.speed{grid-area: speed;}
+div.panel>div.fan>div.up::after{content: '\f077'}
+div.panel>div.fan>div.down::after{content: '\f078'}
+
+/*ac*/
+div.ac{
+  display: grid;
+  width: 100%;
+  grid-template-areas: 
+  "label label up" 
+  "label label temp"
+  "label label down"
+  "fan   swing mode";
+}
+div.panel>div.ac>div{display: flex; align-items: center; margin: auto;}
+div.panel>div.ac>div.label{grid-area: label;grid-row-end: span 3; grid-column-end: span 2;margin:0; align-self: flex-start;}
+div.panel>div.ac>div.up{grid-area: up;}
+div.panel>div.ac>div.temp{grid-area: temp;}
+div.panel>div.ac>div.down{grid-area: down;}
+div.panel>div.ac>div.fan{grid-area: fan;}
+div.panel>div.ac>div.swing{grid-area: swing;}
+div.panel>div.ac>div.mode{grid-area: mode;}
+div.panel>div.ac>div.up::after{content: '\f077'}
+div.panel>div.ac>div.down::after{content: '\f078'}
+
 
 
 /*subpanel selector*/
