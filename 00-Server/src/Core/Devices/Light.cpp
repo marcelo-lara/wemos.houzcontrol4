@@ -66,7 +66,6 @@ void Light::setOn(bool _on){
   if(this->node>0){
     if(this->isMux){
       taskManager->addTask(command_send_to_mux, this->id, this->on?1:0, this->node);
-      Serial.println("SendCommandToMux()");
     }else{
       taskManager->addTask(command_rf_send, this->id, this->on?1:0, this->node);
     };
@@ -80,14 +79,11 @@ void Light::set(long payload){
 
 //request to query device
 void Light::update(){
-  if(this->isLocal){}
-  else   
+  if(!this->isLocal)
     taskManager->addTask(command_request_update, (muxCh>0)?muxCh:id, 0, this->node);
-
 };
 
 //update device values with received payload
 void Light::decode(long _payload){
-  Serial.printf("[%X]Light::decode(%i)\n", this->id, _payload);
   this->on=(_payload!=0);
 };

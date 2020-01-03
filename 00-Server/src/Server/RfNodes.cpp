@@ -80,8 +80,14 @@ void RfNodes::ackNode(int _node){
    }
 };
 
-void RfNodes::sendToMux(int muxCh, int pos, bool on){
-
+void RfNodes::sendToMux(int muxId, int muxPos, bool on){
+  for (int i = 0; i < muxCount; i++){
+    if(this->mux[i]->channel==muxId){
+      long payload=mux[i]->set(muxPos, on);
+      TaskManager::getInstance()->addTask(command_rf_send, mux[i]->channel, payload, mux[i]->node);
+      return;
+    }
+  };
 };
 
 

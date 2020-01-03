@@ -62,5 +62,4 @@ void Fan::update(){
 void Fan::decode(long _payload){
   this->on=(_payload!=0);
   if(_payload>0) this->speed=_payload;
-  Serial.printf("[%i]Fan | on:%i | speed: %i\n", this->id, this->on, this->speed);
 };

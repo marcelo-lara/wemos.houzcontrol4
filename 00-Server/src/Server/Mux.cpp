@@ -9,12 +9,17 @@ Mux::Mux(int channel, NodeEnm node, int* list, int listLen){
 
 //set mux out | return new value
 long Mux::set(int muxPos, bool on){
-
+  if(on){
+    bitSet(this->current, muxPos);
+  }else{
+    bitClear(this->current, muxPos);
+  }
+  return this->current;
 };
 
 //decode muxed packet into devices
 bool Mux::demux(long payload){
-  Serial.printf("[0x%X]Mux::demux %i|%i\n", this->channel, payload, this->listLen);
+  this->current=payload;
   int pos=0;
 
   //fill values

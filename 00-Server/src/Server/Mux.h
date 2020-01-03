@@ -16,4 +16,7 @@ public:
   int* list;
   int listLen;
 
+private:
+  long current;
+
 };

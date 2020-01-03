@@ -21,7 +21,7 @@ public:
   void update();
   void parsePacket(Packet packet);
   void demux(long payload, int devLen, int* devArray);
-  void sendToMux(int muxCh, int pos, bool on);
+  void sendToMux(int muxId, int muxPos, bool on);
 
   //node updater
   int nodesCount = 3;
