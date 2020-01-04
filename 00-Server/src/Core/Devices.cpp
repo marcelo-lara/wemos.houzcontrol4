@@ -17,22 +17,6 @@ void Devices::set(u8 deviceId, u32 payload){
     dev->payload = payload;
 };
 
-//get devices by multiplexed channel
-Device* Devices::getByMux(int muxCh){
-
-  //count matching elements
-  int q = 0;
-  for (int i = 0; i < listLen; i++){
-    if(list[i]->type==devtype_light){
-
-    };
-  };
-  return NULL;
-
-
-};
-
-
 ///////////////////////////////////////////////
 // json 
 String Devices::toJson(){

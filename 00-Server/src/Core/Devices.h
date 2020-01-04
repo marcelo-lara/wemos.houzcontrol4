@@ -46,7 +46,6 @@ public:
   };
   int listLen = 21; //total channels
   Device* get(u8 deviceId);
-  Device* getByMux(int muxCh);
   void set(u8 deviceId, u32 payload);
 
 
