@@ -14,9 +14,6 @@ private:
     static Devices* instance;
     Devices();
     
-    //TODO: cache json output
-    String _jsonCache = "";
-
 public:
   static Devices* getInstance();
 
@@ -49,6 +46,10 @@ public:
   void set(u8 deviceId, u32 payload);
 
 
-  //TODO: cache output
   String toJson();
+  void   toJsonVoid();
+private:
+  String toJson_cache;
+  bool   toJson_cacheVoid = true;
+
 };

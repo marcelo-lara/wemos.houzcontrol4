@@ -20,17 +20,24 @@ void Devices::set(u8 deviceId, u32 payload){
 ///////////////////////////////////////////////
 // json 
 String Devices::toJson(){
-  String json ="[";
+  if(!toJson_cacheVoid)
+    return toJson_cache;
+
+  //rebuild json string    
+  toJson_cache ="[";
   for (int i = 0; i < listLen; i++)
-    json += list[i]->toJson() + ((i+1)==listLen?"":",");
-  json += "]";
-  return json;
+    toJson_cache += list[i]->toJson() + ((i+1)==listLen?"":",");
+  toJson_cache += "]";
+  toJson_cacheVoid=false;
+  return this->toJson_cache;
+};
+void Devices::toJsonVoid(){
+  toJson_cacheVoid=true;
 };
 
 ///////////////////////////////////////////////
 // instance 
 Devices::Devices(){
-  // this->lightsSetup();
   this->listLen=(sizeof(list)/sizeof(*list));
 };
 Devices* Devices::instance = 0;

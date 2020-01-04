@@ -51,6 +51,7 @@ void runTask(){
   switch (task.command){
  
   case command_update_device:
+    devices->toJsonVoid();
     devices->get(task.device.id)->decode(task.device.payload);
     break;
 
