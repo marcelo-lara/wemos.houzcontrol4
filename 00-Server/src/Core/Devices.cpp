@@ -29,6 +29,7 @@ String Devices::toJson(){
     toJson_cache += list[i]->toJson() + ((i+1)==listLen?"":",");
   toJson_cache += "]";
   toJson_cacheVoid=false;
+  Serial.println("toJson_cache rebuilt");
   return this->toJson_cache;
 };
 void Devices::toJsonVoid(){
