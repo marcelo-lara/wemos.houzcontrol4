@@ -43,11 +43,11 @@ String Environment::toJson(){
 
 //update environment values request
 void Environment::update(){
-  Serial.println("Environment::update()");
+  Serial.printf("[%X]Environment::update()\n", this->id);
 };
 
 void Environment::decode(long _payload){
-  Serial.printf("[%i]Environment::update(payload:%l)\n", this->id, _payload);
+  this->on=true;
 };
 
 void Environment::update(EnvironmentParam param, float val){
