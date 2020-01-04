@@ -9,7 +9,8 @@ Devices *devices = devices->getInstance();
 //RF link
 #include <RFlink.h>
 void onRFrxCallback(Packet devicePacket);
-static RFlink rfLink(onRFrxCallback);
+void onRFfailCallback(Packet devicePacket);
+static RFlink rfLink(onRFrxCallback, onRFfailCallback);
 
 //Node manager
 #include "src/Server/RfNodes.h"
@@ -108,3 +109,7 @@ void runTask(){
 void onRFrxCallback(Packet pkt){
   rfNodes.parsePacket(pkt); //delegate rfNodes
 };
+void onRFfailCallback(Packet pkt){
+  Serial.println("->onRFfailCallback");
+};
+
