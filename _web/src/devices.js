@@ -57,7 +57,7 @@ const devices = {
     {id:0x00, name:'server_node', type: 0, on: 0, val: 0, zone: 0, elem: undefined},
     {id:0x01, name:'server_rf', room:0, val: 0}
   ],
-  byRoom: (zone)=>{
+  byZone: (zone)=>{
     let ret = [];
     for (const dev of devices.list) {
       if(dev.zone==zone) ret.push(dev);

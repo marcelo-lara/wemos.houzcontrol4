@@ -10,7 +10,7 @@ div.wrapper{
   "title master-scene status"
   "rooms panel panel"
   "weather subpanel power";
-  height:100vh;
+  height: 100vh;
   }
 div.wrapper>div{display:flex;justify-content:center;align-items:center;overflow: hidden;}
 div.title{grid-area:title;background:url(images/hauskontrol.svg) no-repeat 0 0;background-size:15vw;margin:20px}

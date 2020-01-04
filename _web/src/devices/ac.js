@@ -8,7 +8,7 @@ class AC{
     this.name=dev.name||"AC";
 
     //build element
-    this.elem=el("<div class=\"btn ac\"></div>");
+    this.elem=el("<div class=\"btn ac\"><div class=\"label\">ac</div><div class=\"up\"></div><div class=\"temp\">24</div><div class=\"down\"></div><div class=\"acfan\">F</div><div class=\"swing\">S</div><div class=\"mode\">cool</div></div>");
     this.elem.textContent = this.name;
     if(dev.on) this.elem.classList.add("on");
 

@@ -14,7 +14,7 @@ class Environment{
     this.light = dev.light;
 
     //build element
-    this.elem=el("<div class=\"env\"><span class=\"temp\"></span>º| <span class=\"humidity\"></span>%| <span class=\"pressure\"></span>hPa| <span class=\"light\"></span></div>");
+    this.elem=el("<div class=\"env\"><span class=\"temp\"></span><span class=\"humidity\"></span><span class=\"pressure\"></span><span class=\"light\"></span></div>");
     
 
     this.tempElem= this.elem.querySelector(".temp");
