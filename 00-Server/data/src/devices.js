@@ -71,7 +71,7 @@ const devices = {
     return undefined;
   },
   setup: ()=>{
-    return api.post()
+    return api.request("", "POST")
        .then(devices._setup_post);
   },
   _setup_post: (data)=>{

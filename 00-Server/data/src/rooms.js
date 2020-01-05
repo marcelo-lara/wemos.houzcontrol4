@@ -18,7 +18,8 @@ const rooms = {
       btn.addEventListener("click", ()=>rooms.select(room.id), true);
       room.elem=btn;
       rooms.wrapper.appendChild(room.elem);
-    }
+    };
+    rooms.select(rooms.list[0].id);
   },
   
   select: zone=>{

@@ -5,7 +5,33 @@ const el=(domstring)=>{
 };
 
 const api={
-  _url: 'http://hauskontrol.local/api',
+   request: (url, method, data)=>{
+    url = 'http://192.168.1.16/api/' + url;
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, url);
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          resolve(JSON.parse(xhr.response));
+        } else {
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send(JSON.stringify(data));
+    });
+  },
+     
+   
    post: async(apifx='',method='POST',data)=>{
     // Default options are marked with *
     let response = await fetch(api._url + apifx, {
@@ -22,7 +48,7 @@ const api={
     return _data; // parses JSON response into native JavaScript objects
   },
   addTask: (_task, _id, _payload)=>{
-    return api.post("/task","POST",{
+    return api.request("task","POST",{
       task: _task,
       id: _id,
       payload: _payload
