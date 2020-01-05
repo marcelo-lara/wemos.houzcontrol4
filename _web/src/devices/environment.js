@@ -14,7 +14,7 @@ class Environment{
     this.light = dev.light;
 
     //build element
-    this.elem=el("<div class=\"env\"><span class=\"temp\"></span><span class=\"humidity\"></span><span class=\"pressure\"></span><span class=\"light\"></span></div>");
+    this.elem=el("<div class=\"btn env\"><div class=\"temp\"></div><div class=\"humidity\"></div><div class=\"pressure\"></div><div class=\"light\"></div></div>");
     
 
     this.tempElem= this.elem.querySelector(".temp");
@@ -38,7 +38,7 @@ class Environment{
     if(this.on) this.elem.classList.add("on") 
     else this.elem.classList.remove("on") 
     api.addTask(tasks.set_device, this.id, this.on?1:0);
-    console.log("light|", this.on?"on":"off");
+    // console.log("light|", this.on?"on":"off");
   }
 
 
