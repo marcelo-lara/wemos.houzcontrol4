@@ -44,7 +44,7 @@ div.panel::-webkit-scrollbar-thumb
 
 
 /*// masonry grid /////////////////*/
-.masonry-grid {display: grid !important;grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));grid-gap: 5pt;grid-auto-rows: minmax(200px, 200px);grid-auto-flow: dense;padding: 5pt;align-items: unset !important;}  
+.masonry-grid {display: grid !important;grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));grid-gap: 5pt;grid-auto-rows: minmax(120px, 120px);grid-auto-flow: dense;padding: 5pt;align-items: unset !important;}  
 .masonry-grid>div {padding: 1rem;color: #929796;background-color: #333;}
 .masonry-grid>div.m-2c {grid-column-end: span 2;}
 .masonry-grid>div.m-2r {grid-row-end: span 2;}
@@ -106,22 +106,24 @@ div.panel>div.fan>div.down::after{content: '\f078'}
 div.ac{
   display: grid;
   width: 100%;
-  grid-template-areas: 
-  "label label up" 
-  "label label temp"
-  "label label down"
-  "fan   swing mode";
+  grid-template-areas:
+    "label label label up"
+    "label label label temp"
+    "fan swing  mode  down";
 }
 div.panel>div.ac>div{display: flex; align-items: center; margin: auto;}
+div.panel>div.ac>div.on{background: none}
 div.panel>div.ac>div.label{grid-area: label;grid-row-end: span 3; grid-column-end: span 2;margin:0; align-self: flex-start;}
-div.panel>div.ac>div.up{grid-area: up;}
+div.panel>div.ac>div.up{grid-area: up;padding: 0 10pt;}
 div.panel>div.ac>div.temp{grid-area: temp;}
-div.panel>div.ac>div.down{grid-area: down;}
-div.panel>div.ac>div.fan{grid-area: fan;}
+div.panel>div.ac>div.down{grid-area: down;padding: 0 10pt;}
+div.panel>div.ac>div.acfan{grid-area: fan;}
 div.panel>div.ac>div.swing{grid-area: swing;}
 div.panel>div.ac>div.mode{grid-area: mode;}
 div.panel>div.ac>div.up::after{content: '\f077'}
 div.panel>div.ac>div.down::after{content: '\f078'}
+div.panel>div.ac>div.acfan::after{content: '\f863';padding: 0 3pt;}
+div.panel>div.ac>div.swing::after{content: '\f7e5';padding: 0 3pt;}
 
 
 
