@@ -10,9 +10,14 @@
 #include <ESPAsyncWebServer.h>
 AsyncWebServer server(80);
 
+#include <ESP8266HTTPClient.h>
+bool annouce_set;
+String announce_server = "";
+
 #include "AsyncJson.h"
 #include "ArduinoJson.h"
 const String JSON_OK = "{\"result\":\"ok\"}";
+const String JSON_ERR = "{\"result\":\"ok\"}";
 
 // HouzControl4 modules
 #include "src/Light.h"
@@ -53,22 +58,32 @@ void taskWorker()
   if (!taskManager.arePendingTasks()) return; 
   Task task = taskManager.getNextTask();
 
-  //scene shortcut
-  if (task.command == command_set_scene)
-  {
+  switch (task.command){
+  case command_set_scene:
     renderScene(task.device.payload);
-    return;
-  }
-
-  //action should be performed on a device
-  for (size_t i = 0; i < deviceCount; i++)
-  {
-    if (devices[i].id != task.device.id)
-      continue;
-    devices[i].doAction(task.command, task.device.payload);
     break;
-  };
+
+  case command_set_device:
+    getLight(task.device.payload).doAction(task.command, task.device.payload);
+    break;
+
+  case command_post_to_server:
+    announce_send(task);
+    break;
+  
+  default:
+    Serial.printf("command [%i] not handled\n", task.command);
+    break;
+  }
 };
+
+Light getLight(int id){
+  for (size_t i = 0; i < deviceCount; i++){
+    if (devices[i].id == id) 
+      return devices[i];
+  };
+  return Light(-1,-1);
+}
 
 // delegates
 void handleButtonClick(int btnClickType)
@@ -77,6 +92,7 @@ void handleButtonClick(int btnClickType)
   {
   case buttonEv_click:
     taskManager.addTask(command_set_device, 1, -1);
+    taskManager.addTask(command_post_to_server, 1, -1);
     break;
   case buttonEv_dblclick:
     taskManager.addTask(command_set_device, 2, -1);
@@ -106,7 +122,6 @@ void apiSetup()
 
   //FS
   if (SPIFFS.begin()){
-    Serial.println("SPIFFS loaded");
     server.serveStatic("/", SPIFFS, "/index.html");
   }
   else{
@@ -140,8 +155,9 @@ void api_get_api(AsyncWebServerRequest *request){
   request->send(200, "application/json", jsonRes);
 }
 
+
 /////////////////////////////////////
-// Devices
+// API
 void api_post_api(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
 {
   if (index){
@@ -168,6 +184,16 @@ void api_post_api(AsyncWebServerRequest *request, uint8_t *data, size_t len, siz
     return;
   }
 
+  //set server shortcut
+  String serverUri = doc["server"];
+  if (serverUri.length() > 0){
+    request->send(200, "application/json", JSON_OK);
+    announce_server=serverUri;
+    annouce_set=true;
+    Serial.println(serverUri);
+    return;
+  }
+
   //set device
   Device dev;
   dev.id = doc["id"];
@@ -180,6 +206,28 @@ void api_post_api(AsyncWebServerRequest *request, uint8_t *data, size_t len, siz
 }
 
 /////////////////////////////////////
+// Announce to server
+void announce_send(Task task){
+  if(!annouce_set) return;
+
+  WiFiClient client;
+  HTTPClient httpClient;
+  httpClient.begin(client, announce_server);
+  int httpCode = httpClient.GET();
+  if (httpCode != HTTP_CODE_OK) {
+    Serial.printf("[HTTP] POST... failed, error: %s\n", httpClient.errorToString(httpCode).c_str());
+    annouce_set=false;
+  };
+
+  Serial.printf("[HTTP] POST... code: %d\n", httpCode);
+  const String& payload = httpClient.getString();
+  Serial.println("received payload:\n<<");
+  Serial.println(payload);
+  Serial.println(">>");
+  
+};
+
+/////////////////////////////////////
 // Scenes
 void renderScene(int sceneId)
 {
@@ -190,9 +238,11 @@ void renderScene(int sceneId)
     Serial.println("renderScene(scene_hello)");
     break;
   case scene_sleep:
+    Serial.println("renderScene(scene_sleep)");
     allLightsOff();
     break;
   case scene_goobye:
+    Serial.println("renderScene(scene_goobye)");
     allLightsOff();
     break;
   }

@@ -4,7 +4,9 @@
 
 enum Command{
     command_set_device = 1,
-    command_set_scene  = 2
+    command_set_scene  = 2,
+    command_post_to_server = 3,
+    command_set_server = 4
 };
 
 struct Device {
