@@ -75,6 +75,7 @@ const devices = {
        .then(devices._setup_post);
   },
   _setup_post: (data)=>{
+    devices.list = [];
     for(const dev of data.devs){
       switch(dev.type){
         case devType.light: devices.list.push(new Light(dev)); break;
