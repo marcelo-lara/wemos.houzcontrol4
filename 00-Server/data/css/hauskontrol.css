@@ -24,6 +24,23 @@ div.power{grid-area:power}
 
 div.wrapper>div>div{flex:1 0 auto;overflow: hidden;}
 
+/*loader*/
+div.loader{
+  position: fixed;
+  top: 0;
+  right:0;
+  bottom:0;
+  left: 0;
+  background-color: #000000ad;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+  }
+div.loader>div{}
+div.loader>div>i{font-size: 5vw;display: block;}
+div.loader .error{display: none;}
 /*scrollbar*/
 div.panel::-webkit-scrollbar-track
 {

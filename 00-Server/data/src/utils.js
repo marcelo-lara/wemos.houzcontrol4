@@ -17,6 +17,7 @@ const api={
       referrer: 'client', // no-referrer, *client
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
+
     let _data = await response.json();
     return _data; // parses JSON response into native JavaScript objects
   },

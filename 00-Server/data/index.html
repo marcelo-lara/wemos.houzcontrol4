@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/hauskontrol.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+
+    <meta http-equiv="refresh" content="600">
 </head>
 
 <body>
@@ -39,7 +41,15 @@
             <div class="btn"></div>
         </div>
     </div>
-
+    <div class="loader">
+      <div class="loading">
+        <i class="fas fa-circle-notch fa-spin"></i>
+        loading...
+      </div>
+      <div class="error">
+        retry
+      </div>
+    </div>
     <!-- <script src="src/utils.js" async></script>
     <script src="src/devices/light.js" async></script>
     <script src="src/devices/fan.js" async></script>
@@ -49,7 +59,7 @@
     <script src="src/rooms.js" async></script>
 
     <script src="src/hauskontrol4.js" async ></script> -->
-    <script src="app.min.js" defer async ></script>
+    <script src="dist/app.min.js" defer async ></script>
 </body>
 
 </html>

@@ -1,6 +1,32 @@
 'use strict';
 const ui={
 
+  loader:{
+    hide: ()=>{
+      document.querySelector("div.loader").style.display="none";
+    },
+    show: ()=>{
+      document.querySelector("div.loader").style.display="inline";
+    },
+    showError: (msg)=>{
+      document.querySelector("div.loader>div.loading").style.display="none";
+      document.querySelector("div.loader>div.error").style.display="inline";
+      ui.loader.retryTimer();
+    },
+    retryTimer: ()=>{
+      ui.loader.retries++;
+      if(ui.loader.retries>15){
+        ui.loader.retries=0;
+        ui.loader.show();
+        ui.setup();
+      }else{
+        document.querySelector("div.loader>div.error").innerText="retry in "+(15-ui.loader.retries);
+        setTimeout(ui.loader.retryTimer, 1000);
+      }
+    },
+    retries: 0
+  },
+
   status: {
     elem: undefined,
     setup: ()=>{
@@ -42,7 +68,9 @@ const ui={
     //fetch devices from api
     devices.setup()
       .then(ui.weather.setup)
-      .then(rooms.setup);
+      .then(rooms.setup)
+      .then(ui.loader.hide)
+      .catch(ui.loader.showError);
     ui.status.setup();
   }
 };
