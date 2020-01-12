@@ -2,7 +2,6 @@
 #include "Arduino.h"
 #include "../Core/Model.h"
 
-
 enum RfNodeStatus{
   nodeStatus_unknown,
   nodeStatus_ready,
@@ -10,7 +9,7 @@ enum RfNodeStatus{
   nodeStatus_awaiting_response
 };
 
-#define RfNodePollInterval 3600000 //1h
+#define RfNodePollInterval 3600000‬ //1h
 typedef void (*RfNode_updater)();
 class RfNode{
 public:
