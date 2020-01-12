@@ -36,10 +36,12 @@ bool RfNode::onUpdate(){
 };
 
 //data received from node
+#define RfNodePollInterval 3600000 //1h
+
 void RfNode::onAck(){
   // Serial.printf("\t[%i]RfNode::onAck\n", this->node);
   this->setStatus(nodeStatus_ready);
-  nextQuery=millis()+RfNodePollInterval;
+  nextQuery=millis() + RfNodePollInterval;
 };
 
 void RfNode::setStatus(RfNodeStatus newStatus){

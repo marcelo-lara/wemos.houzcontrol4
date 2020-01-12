@@ -9,7 +9,6 @@ enum RfNodeStatus{
   nodeStatus_awaiting_response
 };
 
-#define RfNodePollInterval 3600000‬ //1h
 typedef void (*RfNode_updater)();
 class RfNode{
 public:
