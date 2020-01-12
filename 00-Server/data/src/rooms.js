@@ -3,10 +3,10 @@ const rooms = {
   wrapper: undefined,
   selected: 0,
   list: [
-    {id:1, name:"living", selected: false, elem: undefined},
-    {id:2, name:"suite"},
-    {id:3, name:"office"},
-    {id:4, name:"kitchen"}
+    {id:1, name:"living", label: "Wohnzimmer", selected: false, elem: undefined},
+    {id:2, name:"suite", label: "Schlafzimmer"},
+    {id:3, name:"office", label: "Büro"},
+    {id:4, name:"kitchen", label: "Küche"}
   ],
 
   setup: ()=>{
