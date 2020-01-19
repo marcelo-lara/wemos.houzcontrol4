@@ -2,7 +2,7 @@
 // // TODO: handle scene steps
 // // TODO: pause between steps
 
-// #include "SceneManager.h"
+#include "SceneManager.h"
 // #define arraySize(array) ((sizeof(array))/(sizeof(array[0])))
 
 // SceneStep _sleep_cue[] = {
@@ -15,9 +15,9 @@
 //   {command_set_device, living_fxLight	  ,0}
 // };
 
-// SceneManager::SceneManager(){
+SceneManager::SceneManager(){
 
-// };
+};
 
 // void SceneManager::play(int sceneId){
 //   Serial.printf("SceneManager::play(%d)\n", sceneId);

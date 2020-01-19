@@ -141,15 +141,20 @@ void api_sendRfRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len
   //set device
   Device dev;
   dev.id = doc["channel"];
- // dev.node = doc["node"];
+  int _node = doc["node"];
+  dev.node = (NodeEnm)_node;
+  //dev.node = (NodeEnm)doc["node"];
   dev.payload = doc["payload"];
 
-  if (!(dev.id == 0 && dev.payload == 0)){
-//    TaskManager::getInstance()->addTask(command_rf_send, dev);    
-    request->send(200, "application/json", "{\"status\":\"packet enqueed\"}");
-  }else{
-    request->send(200, "application/json", "{\"status\":\"error on data\"}");
+  int _cmd = doc["command"];
+  if (dev.id == 0){
+    request->send(422, "application/json", "{\"status\":\"error on data\"}");
+    return;
   }
+  
+  TaskManager::getInstance()->addTask(_cmd==1?command_rf_query:command_rf_send, dev);    
+  request->send(200, "application/json", "{\"status\":\"packet enqueed\"}");
+  
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
