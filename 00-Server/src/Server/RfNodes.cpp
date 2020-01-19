@@ -9,11 +9,8 @@ void RfNodes::setup(){
 
 //office updater
   nodes[0]->raise_updater=[](){
-    //TaskManager::getInstance()->addTask(command_rf_query, node_office,      0, node_office);
-    //TaskManager::getInstance()->addTask(command_rf_query, office_light,      0, node_office);
-    TaskManager::getInstance()->addTask(command_rf_query, external_temp,     0, node_office);
-    TaskManager::getInstance()->addTask(command_rf_query, external_humidity, 0, node_office);
-    TaskManager::getInstance()->addTask(command_rf_query, external_pressure, 0, node_office);
+    TaskManager::getInstance()->addTask(command_rf_query, office_light,      0, node_office);
+    TaskManager::getInstance()->addTask(command_rf_query, external_weather,  0, node_office);
   };
 
 //suite updater
