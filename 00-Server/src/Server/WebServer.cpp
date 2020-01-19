@@ -106,7 +106,7 @@ void api_addTask(AsyncWebServerRequest *request, uint8_t *data, size_t len, size
   if(tsk==0 || tsk>99) return api_returnError(request,"error task is not valid");
   int id = doc["id"];
   long payload = doc["payload"];
-  if(id==0) return api_return(request, "error: id is not set", 422);
+  if(id==0 && tsk!=command_play_scene) return api_return(request, "error: id is not set", 422);
 
   try
   {

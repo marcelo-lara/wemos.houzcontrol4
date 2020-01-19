@@ -39,8 +39,8 @@
 #define living_dicro_7    0x97
 #define living_dicro_8    0x98
 #define living_main       0x99
-#define living_booksh     0x9A
-#define living_corner     0x9B
+#define living_corner     0x9A
+#define living_booksh     0x9B
 #define living_fx1        0x9C
 #define living_fx2        0x9D
 

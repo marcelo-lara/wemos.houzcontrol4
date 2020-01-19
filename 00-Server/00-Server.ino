@@ -4,7 +4,7 @@
 // HouzControl4 modules
 #include "src/Core/HausCore.h"
 Devices *devices = devices->getInstance();
-//SceneManager sceneManager;
+SceneManager sceneManager;
 
 //RF link
 #include <RFlink.h>
@@ -32,10 +32,6 @@ void setup(){
   pkt.id=living_dicroLight;
   pkt.payload=0;
   rfNodes.parsePacket(pkt);
-  
-  // Light* d = static_cast<Light*>(devices->list[0]); 
-  // d->turnOff();
-
 
 };
 
@@ -73,7 +69,8 @@ void runTask(){
 
   // Scene Cue //////////////////////////////////////////////////////
   case command_play_scene: 
-    Serial.println("command_play_scene");
+    Serial.println("TASK-command_play_scene");
+    sceneManager.play(task.device.payload);
     break;
 
   // Custom actions /////////////////////////////////////////////////
