@@ -1,17 +1,9 @@
 'use strict';
 
-const scenes = {
-  NORMAL:  0,
-  GOODBYE: 1,
-  SLEEP:   2,
-  DRAGON:  3,
-  WELCOME: 4
-}
-
 //device type
 const devType = {
   undefined : 0, //not defined device (error!)
-  light : 1, //light (use initializer to multiplex)
+  light : 1, //light
   env   : 2, //Environment
   fan   : 3, //fan 
   ac    : 4, //air conditioner
@@ -53,23 +45,9 @@ const enumToString= (enm, id)=>{
 };
 
 const devices = {
-  list: [
-    {id:0x00, name:'server_node', type: 0, on: 0, val: 0, zone: 0, elem: undefined},
-    {id:0x01, name:'server_rf', room:0, val: 0}
-  ],
-  byZone: (zone)=>{
-    let ret = [];
-    for (const dev of devices.list) {
-      if(dev.zone==zone) ret.push(dev);
-    };
-    return ret;
-  },
-  byId: (deviceId)=>{
-    for (const dev of devices.list) {
-      if(dev.id==deviceId) return dev;
-    }
-    return undefined;
-  },
+  list: [],
+  byZone: (zone)=>devices.list.filter(x=>x.zone==zone),
+  byId: (deviceId)=>devices.list.find(x=>x.id==deviceId),
   setup: ()=>{
     return api.getDeviceList()
        .then(devices._setup_post);
@@ -92,7 +70,6 @@ const devices = {
 };
 
 let main = {
-  currentScene: scenes.NORMAL,
   lastUpdate: 0,
   serverapi: "http://hauskontrol.local/api"
 };

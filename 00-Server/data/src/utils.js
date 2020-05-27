@@ -6,7 +6,9 @@ const el=(domstring)=>{
 
 const api={
    _fetch: async(apifx='',method='POST',data)=>{
-    const uri=window.location.href + 'api' + apifx;
+    
+    const uri=(window.location.href=="http://localhost/"?"http://hauskontrol.local/":window.location.href) + 'api' + apifx;
+
     let response = await fetch(uri, {
       method: method, // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin

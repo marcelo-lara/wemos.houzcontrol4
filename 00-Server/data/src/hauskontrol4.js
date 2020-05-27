@@ -60,15 +60,11 @@ const ui={
 
 
   setup: ()=>{
-    if(typeof devices == 'undefined' || typeof api == 'undefined' || typeof api == 'undefined'){
-      setTimeout(ui.setup, 100);
-      return;
-    }
-
     //fetch devices from api
     devices.setup()
       .then(ui.weather.setup)
       .then(rooms.setup)
+      .then(scenes.setup)
       .then(ui.loader.hide)
       .catch(ui.loader.showError);
     ui.status.setup();
@@ -76,6 +72,4 @@ const ui={
 };
 
 //setup
-(()=>{
-  ui.setup();
-})();
+window.onload = ui.setup;
