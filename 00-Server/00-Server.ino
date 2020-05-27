@@ -39,6 +39,7 @@ void loop(){
   wemosWiFi.update();
   rfLink.update();
   rfNodes.update();
+  sceneManager.update();
   if(TaskManager::getInstance()->arePendingTasks()) runTask(); 
 };
 
