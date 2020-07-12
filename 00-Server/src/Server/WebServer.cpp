@@ -108,16 +108,10 @@ void api_addTask(AsyncWebServerRequest *request, uint8_t *data, size_t len, size
   long payload = doc["payload"];
   if(id==0 && tsk!=command_play_scene) return api_return(request, "error: id is not set", 422);
 
-  try
-  {
-    Command cTsk = (Command)tsk;
-    TaskManager::getInstance()->addTask(cTsk, id, payload);    
-    request->send(200, "application/json", "{\"result\":\"ok\"}");
-  }
-  catch(const std::exception& e)
-  {
-    return api_return(request, e.what(), 422);
-  }
+  Command cTsk = (Command)tsk;
+  TaskManager::getInstance()->addTask(cTsk, id, payload);    
+  request->send(200, "application/json", "{\"result\":\"ok\"}");
+
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
